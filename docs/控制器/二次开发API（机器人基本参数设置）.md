@@ -1,0 +1,3442 @@
+# 二次开发API（机器人基本参数设置）
+
+# 概述
+
+本章旨在帮助用户对于二次开发的库和函数接口的调用，参数的设置等。目录如下：
+
+## 第一章：系统控制与初始化
+
+### 1.1 系统启动与初始化
+
+### 1.2 伺服使能与状态控制
+
+### 1.3 操作模式与状态
+
+## 第二章：机器人基本参数设置
+
+### 2.1 机器人类型与配置
+
+### 2.2 伺服映射与配置
+
+### 2.3 机器人轴数与限制
+
+## 第三章：外部轴配置与管理
+
+### 3.1 外部轴基本设置
+
+### 3.2 外部轴运动参数
+
+### 3.3 外部轴标定
+
+### 3.4 外部轴运动控制
+
+## 第四章：运动控制与操作
+
+### 4.1 点动控制
+
+### 4.2 运动控制
+
+### 4.3 速度控制
+
+## 第五章：力矩与动力学控制
+
+### 5.1 力矩控制
+
+### 5.2 动力学辨识
+
+### 5.3 碰撞检测
+
+## 第六章：坐标系与标定
+
+### 6.1 坐标系管理
+
+### 6.2 工具坐标系
+
+### 6.3 用户坐标系
+
+### 6.4 位置与零点设置
+
+## 第七章：位置与变量管理
+
+### 7.1 位置获取与监控
+
+### 7.2 变量管理
+
+## 第八章：IO与通信控制
+
+### 8.1 IO配置与操作
+
+### 8.2 通信接口
+
+## 第九章：错误处理与消息管理
+
+### 9.1 消息管理
+
+### 9.2 错误处理
+
+## 第十章：示教器与作业文件控制
+
+### 10.1 示教器控制
+
+### 10.2 作业文件与自定义指令
+
+## 第十一章：回调函数与周期控制
+
+### 11.1 回调函数设置
+
+# 版本信息
+
+| 二次开发版本 | 公司 |
+| 1.1.0 | INEXBOT |
+
+# 版本迭代
+
+| 版本 | 修改日期 | 修改人 | 描述 |
+| 1.0.0 | 20250310 | Shanyufeng | 初始版本 |
+| 1.1.0 | 20260403 | ZhangHongyu | 接口功能分类 |
+
+## 第一章：系统控制与初始化
+
+概述
+
+本章介绍系统启动、初始化、控制器网络配置、重启与恢复出厂设置等功能。
+
+### 1.1 系统启动与初始化
+
+| 函数名称 | 函数功能 |
+| NRC_StartController | 系统启动函数。 |
+| NRC_GetControlInitComplete | 查看系统初始化是否完成。 |
+| NRC_RestoreFactorySettings | 恢复出厂设置。 |
+| NRC_RebootController | 重启控制器。 |
+| NRC_ModifyControllerIP | 修改控制器IP地址。 |
+| NRC_GetControlCycle | 获取控制器与伺服的通讯周期。 |
+| NRC_ShieldedTeachingPendant | 屏蔽示教器连接状态检测(需要在系统启动函数前调用)。 |
+| NRC_GetRobotSum | 获取机器人数量。 |
+| NRC_SetRobotMode | 设置机器人为多机模式。 |
+| NRC_Delayms | 系统延时一定时间。 |
+| NRC_LogInfo | 向NRC系统中打印日志。 |
+| NRC_GetNexMotionLibVersion | 获取NexMotion库版本信息。 |
+| NRC_GetSyncVersion | 获取同步版本号。 |
+
+### 1.2 伺服使能与状态控制
+
+| 函数名称 | 函数功能 |
+| NRC_PowerOn | 伺服上使能。 |
+| NRC_PowerOff | 伺服下使能。 |
+| NRC_ServoEnable | 按下deadman键，使伺服处于上使能的状态。 |
+| NRC_ServoDisable | 松开deadman键，使伺服处于下使能的状态。 |
+| NRC_SetServoReadyStatus | 切换伺服准备状态。 |
+| NRC_GetServoStatus | 获取伺服状态。 |
+| NRC_GetPowerOffSaveSignal | 获取机器人通电状态。 |
+| NRC_SetServoModerOfOperation | 设置伺服运行模式。 |
+| NRC_Rbt_SetServoModerOfOperation | 设置伺服运行模式,多机版。 |
+| NRC_GetServoMode | 获取伺服运行模式。 |
+| NRC_GetStatusWord | 读取伺服状态字。 |
+
+### 1.3 操作模式与状态
+
+| 函数名称 | 函数功能 |
+| NRC_SetOperationMode | 设置操作模式。 |
+| NRC_SetRunModeAutoManBegFlag | 设置切到运行模式自动上电。 |
+| NRC_GetProgramRunStatus | 获取当前程序运行状态。 |
+| NRC_GetRobotRunStatus | 获取当前机器人运动状态。 |
+| NRC_GetTeachBoxConnectStatus | 获取是否连接了示教盒。 |
+
+## 第二章：机器人基本参数设置
+
+概述
+
+本章介绍机器人基本参数的设置函数接口，包括机器人类型配置、伺服映射、DH参数、关节/笛卡尔参数等基础设置。
+
+### 2.1 机器人类型与配置
+
+| 函数名称 | 函数功能 |
+| NRC_SetRobotTypeConfig | 设置机器人类型。 |
+| NRC_Rbt_SetRobotTypeConfig | 设置机器人类型（多机版）。 |
+| NRC_GetRobotTypeConfig | 获取机器人类型。 |
+| NRC_Rbt_GetRobotTypeConfig | 获取机器人类型（多机版）。 |
+| NRC_SetRobotDHConfig | 设置机器人DH参数。 |
+| NRC_GetRobotDHConfig | 获取机器人DH参数。 |
+| NRC_SetRobotJointConfig | 设置机器人关节参数。 |
+| NRC_SetRobotDecareConfig | 设置机器人笛卡尔参数。 |
+| NRC_GetRobotDecareConfig | 获取机器人笛卡尔参数。 |
+| NRC_CalcConfiguration | 计算机器人各关节在acsPos下的形态,仅对R_GENERAL_6S类型机器人有效,其余机器人类型下conf值为0。 |
+
+### 2.2 伺服映射与配置
+
+| 函数名称 | 函数功能 |
+| NRC_SetServoMapRelation | 设置伺服映射关系。 |
+| NRC_SetAllServoMapRelation | 设置伺服映射关系(仅一个机器人的时候可以使用)。 |
+| NRC_Rbt_SetAllServoMapRelation | 设置伺服映射关系 (多机版)。 |
+| NRC_GetConnectServoTypeList | 获取连接的伺服类型列表。 |
+| NRC_GetSlaveNumByID | 通过从站vendorID和productCode获取从站的编号列表。 |
+| NRC_ecatSetCommand | 设置伺服某命令字的值。 |
+| NRC_ecatGetCommand | 读取伺服某命令字的值。 |
+| NRC_GetPDOAddrMap | 获取从站PDO的映射地址。 |
+
+### 2.3 机器人轴数与限制
+
+| 函数名称 | 函数功能 |
+| NRC_GetRobotAxisSum | 获取机器人轴数。 |
+| NRC_GetSyncAxisSum | 获取外部轴轴数。 |
+| NRC_SetRobotRangeLimit | 设置机器人范围限制。 |
+| NRC_GetRobotRangeLimit | 获取机器人范围限制。 |
+| NRC_SetOverTolerance | 设置机器人轴超差。 |
+| NRC_Rbt_SetOverTolerance | 设置机器人轴超差，多机版。 |
+| NRC_GetTolerance | 获取机器人轴超差。 |
+| NRC_Rbt_GetTolerance | 获取机器人轴超差，多机版。 |
+| NRC_ShieldFollowError | 屏蔽机器人轴跟随误差。 |
+
+## 第三章：外部轴配置与管理
+
+概述
+
+本章介绍外部轴（地轨、变位机等）的参数设置、标定、运动控制等功能。
+
+### 3.1 外部轴基本设置
+
+| 函数名称 | 函数功能 |
+| NRC_SetSyncJointNum | 设置机器人外部轴数目。 |
+| NRC_GetSyncGroupNum | 获取当前外部轴组号。 |
+| NRC_SetSyncGroupNum | 设置机器人外部轴组号。 |
+| NRC_SetSyncJointPara | 设置机器人外部轴参数。 |
+| NRC_GetSyncJointPara | 获取机器人外部轴参数。 |
+| NRC_Rbt_GetSyncJointType | 获取机器人外部轴组类型。 |
+| NRC_EncoderZeroOffsetSync | 设置外部轴零点偏移。 |
+
+### 3.2 外部轴运动参数
+
+| 函数名称 | 函数功能 |
+| NRC_SetSyncJogJointSpeedConfig | 设置机器人外部轴点动关节速度。 |
+| NRC_GetSyncJogJointSpeedConfig | 获取机器人外部轴点动关节速度。 |
+| NRC_GetSyncRackConversionRatio | 获取外部轴地轨转换比。 |
+| NRC_SetSyncRackConversionRatio | 设置外部轴地轨转换比。 |
+| NRC_SetSyncCooperation | 设置外部轴地轨是否协作。 |
+| NRC_GetSyncCooperation | 获取外部轴地轨是否协作。 |
+| NRC_ResetSyncAxisMultipleTurns | 调用该接口，把外部轴当前位置重置到-360°~360°内,效果同示教器界面中的复位外部轴多圈转动量指令,该接口仅能重置单个外部轴。 |
+
+### 3.3 外部轴标定
+
+| 函数名称 | 函数功能 |
+| NRC_SetSyncGroupCarbinarion | 标定外部轴点位(组号，点位编号)。 |
+| NRC_GetSyncGroupCarbinarion | 查询某组外部轴是否标定。 |
+| NRC_CalSyncCalibrationResult | 计算外部轴标定结果。 |
+| NRC_SetCurrentSyncPosToZeroPos | 将外部轴当前位置设置为零点或清除多圈值。 |
+
+### 3.4 外部轴运动控制
+
+| 函数名称 | 函数功能 |
+| NRC_RobotMoveJointSync | 机器人外部轴点到点运动，机器人外部轴以 vel 的速度从当前位置以点到点方式运行到 synctarget 位置。 |
+| NRC_RobotMoveLineSync | 机器人外部轴直线运动，机器人本体以 vel 的速度从当前位置以直线方式运行到 target 位置，机器人外部轴以 vel 的速度从当前位置以点到点方式运行到 synctarget 位置。 |
+| NRC_GetAxisVelSync | 获取外部运动速度。 |
+| NRC_SingleSyncAxisMoveJConstVel_For_CustomInstructionCB | 调用该接口,在运行模式下，外部轴syncAxis将会以恒定的vel运动,同时调用多个该函数只有第一个该函数有效。 |
+| NRC_StopSingleSyncAxisMoveJConstVel_For_CustomInstructionCB | 调用该接口,将停止外部轴恒速运动,该接口必须在有外部轴恒速运动状态下调用，否则返回-1。 |
+| NRC_GetSingleSyncAxisMoveJConstVelMoving | 调用该接口获取单个外部轴恒速运动标志位。 |
+
+## 第四章：运动控制与操作
+
+概述
+
+本章涵盖机器人运动控制相关接口，包括操作模式设置、点动控制、点到点运动、复位、速度控制等。
+
+### 4.1 点动控制
+
+| 函数名称 | 函数功能 |
+| NRC_JogMove | 开始点动某轴。 |
+| NRC_JogMoveStop | 停止某关节点动。 |
+| NRC_JogMoveStopAll | 停止所有关节点动。 |
+| NRC_SetJogJointSpeedConfig | 点动关节速度设置。 |
+| NRC_GetJogJointSpeedConfig | 获取点动关节速度。 |
+| NRC_SetJogRectangularSpeedConfig | 点动直角速度设置。 |
+| NRC_GetJogRectangularSpeedConfig | 获取点动直角速度。 |
+| NRC_SetJogSensitivitySpeedConfig | 设置点动灵敏度。 |
+| NRC_SetJogMoveCalculateNum | 设置点动插补点位个数。 |
+
+### 4.2 运动控制
+
+| 函数名称 | 函数功能 |
+| NRC_RobotMoveJoint | 机器人点到点运行。 |
+| NRC_StartResetPoint | 机器人回到复位点的位置。 |
+| NRC_GetPlanningPosition | 获取规划队列的第一个点位。 |
+| NRC_SetTargetPosition | 设置机器人目标位置。 |
+| NRC_PV_SetTargetVelocity | 设置PV模式下运行速度。 |
+| NRC_PV_SetTargetAccAndDec | 设置PV模式下运行加速度，减速度。 |
+| NRC_SetTargetVelocity | 设置目标速度值。 |
+| NRC_PosReachable | 判断本体点位target和外部轴点位syncTarget是否超限，结果由result返回，result值为true表示可以到达，值为false表示不可到达。 |
+
+### 4.3 速度控制
+
+| 函数名称 | 函数功能 |
+| NRC_SetTeachRunSpeedPer | 设置示教速度百分比。 |
+| NRC_GetTeachRunSpeedPer | 获取示教速度百分比。 |
+| NRC_SetAutoRunSpeedPer | 设置自动速度百分比。 |
+| NRC_SetAutoRunSpeedPer_robot | 设置自动速度百分比(多机版本)。 |
+| NRC_GetAutoRunSpeedPer | 获取自动速度百分比。 |
+| NRC_GetAutoRunSpeedPer_robot | 获取自动速度百分比(多机版本)。 |
+| NRC_SetTeachMaxStepSpeed | 设置示教模式最大单步速度。 |
+| NRC_GetTeachMaxStepSpeed | 获取示教模式最大单步速度。 |
+| NRC_SetAbsolutePosResolution | 设置机器人绝对位置分辨率。 |
+| NRC_SetInterpolationMethod | 设置机器人插补方式。 |
+
+## 第五章：力矩与动力学控制
+
+概述
+
+本章包含力矩控制、动力学辨识、碰撞检测、力矩监控等功能。
+
+### 5.1 力矩控制
+
+| 函数名称 | 函数功能 |
+| NRC_SetTargetTorque | 设置机器人目标力矩。 |
+| NRC_SetMaxTorque | 设置机器人轴最大力矩。 |
+| NRC_GetMaxTorque | 获取机器人轴最大力矩。 |
+| NRC_Rbt_SetMaxTorque | 获取机器人轴最大力矩，多机版。 |
+| NRC_GetActualTorque | 获取机器人轴实际力矩。 |
+| NRC_GetActualCurrent | 获取实际电流。 |
+| NRC_GetMaxCurrent | 获取最大电流。 |
+| NRC_GetRatedTorque | 获取各关节额定力矩。 |
+| NRC_Rbt_GetRatedTorque | 获取各关节额定力矩 多机版。 |
+| NRC_GetTorq | 获取各关节力矩,单位为千分比。 |
+| NRC_Rbt_GetTorq | 获取各关节力矩,单位为千分比 多机版。 |
+| NRC_GetSyncTorq | 获取各外部轴关节力矩,单位为千分比。 |
+| NRC_Rbt_GetSyncTorq | 获取各外部轴关节力矩,单位为千分比 多机版。 |
+
+### 5.2 动力学辨识
+
+| 函数名称 | 函数功能 |
+| NRC_SetIdentityParam | 设置动力学辨识所需的两个参数并返回当前轨迹范围下机器人末端在Z坐标轴上的最大值和最小值。 |
+| NRC_RunSafeCheckProgram | 运行范围安全检测程序，该函数功能是运行一次动力学辨识的轨迹，以便确认周围环境是否安全，即确保机器人进行辨识时不会碰到周围的人或物。 |
+| NRC_RunIdentifyProgram | 执行动力学辨识程序，该函数的功能是进行动力学辨识，沿预定轨迹运行十次，每次运行完成后会对获取到的数据进行计算并返回理论力矩与实际力矩的误差值。 |
+| NRC_GetIdentifyError | 获取十次辨识力矩误差值，该函数的功能是获取十次辨识计算的理论力矩与实际力矩的误差值。 |
+| NRC_StopIdentityProgram | 停止动力学辨识程序。 |
+
+### 5.3 碰撞检测
+
+| 函数名称 | 函数功能 |
+| NRC_SetCollisionParam | 设置各关节判定发生碰撞时理论力矩与实际力矩的差值的绝对值，该值越大则判断碰撞发生的灵敏度越低。 |
+| NRC_SetCollisionSwitch | 打开或关闭碰撞检测功能。 |
+| NRC_GetCollisionSwitch | 查看碰撞检测功能是否打开。 |
+| NRC_SetDynamicTrackingErrorMaxAllow | 设置最大允许动态超差值。 |
+| NRC_SetStaticTrackingErrorMaxAllow | 设置最大允许静态超差值。 |
+
+## 第六章：坐标系与标定
+
+概述
+
+本章介绍坐标系管理、工具/用户坐标系标定、切换与参数设置功能。
+
+### 6.1 坐标系管理
+
+| 函数名称 | 函数功能 |
+| NRC_SetCurrentCoord | 切换当前坐标系。 |
+| NRC_GetCurrentCoord | 获取当前坐标系。 |
+| NRC_PositionACStoMCS | 将机器人关节坐标值转换为直角坐标值。 |
+| NRC_PositionMCStoACS | 将机器人直角坐标值转换为关节坐标值。 |
+| NRC_TcpCalculate | 计算特定坐标系下，点位进行固定距离偏移后的位置。 |
+
+### 6.2 工具坐标系
+
+| 函数名称 | 函数功能 |
+| NRC_SetToolCoordParm | 设置工具手参数。 |
+| NRC_GetToolCoordParm | 获取工具手参数。 |
+| NRC_CalibrationToolCoord_7Pos | 标定工具手--7点标定法，标定工具手，自动计算工具手末端位置相对机器人末端位置的偏移量，从而确定该工具坐标系。 |
+| NRC_CalibrationToolCoord_2Pos_SetPos | 2点标定-设置点数据。 |
+| NRC_CalibrationToolCoord_2Pos_Cacl | 2点标定-计算标定结果。 |
+| NRC_CalibrationToolCoord_2Pos_Save | 将2点标定的结果写入到指定的工具手中。 |
+| NRC_SwitchToolCoord | 切换当前工具手。 |
+| NRC_GetCurrentToolCoord | 获取当前工具手编号。 |
+
+### 6.3 用户坐标系
+
+| 函数名称 | 函数功能 |
+| NRC_SetUserCoordParm | 设置用户坐标参数。 |
+| NRC_GetUserCoordParm | 获取用户坐标参数。 |
+| NRC_CalibrationUserCoord | 标定用户坐标，标定用户坐标系，自动计算用户坐标系原点相对机器人直角坐标系原点的偏移量，从而确定该用户坐标系。 |
+| NRC_SwitchUserCoord | 切换当前用户坐标。 |
+| NRC_GetCurrentUserCoord | 获取当前用户坐标编号。 |
+
+### 6.4 位置与零点设置
+
+| 函数名称 | 函数功能 |
+| NRC_SetCurrentPosToZeroPos | 将当前位置设置为零点或清除多圈值。 |
+| NRC_Rbt_SetCurrentPosToZeroPos | 将当前位置设置为零点或清除多圈值(多机版)。 |
+| NRC_Rbt_SetSingleCircleValue | 设置零点位置单圈值(多机版)。 |
+| NRC_Rbt_GetSingleCircleValue | 获取零点位置单圈值(多机版)。 |
+| NRC_GetEncoderPosition | 获取编码器点位。 |
+
+## 第七章：位置与变量管理
+
+概述
+
+本章包含位置获取、位置变量设置、变量管理等功能。
+
+### 7.1 位置获取与监控
+
+| 函数名称 | 函数功能 |
+| NRC_GetCurrentPos | 获取当前位置。 |
+| NRC_Rbt_GetCurrentPos | 获取当前位置(多机版)。 |
+| NRC_GetOtherToolPos | 获取当前位置下其他工具坐标系表示的位置。 |
+| NRC_GetAngularVel | 获取关节角速度,单位 rad/s。 |
+| NRC_GetLinerVel | 获取关节线速度,单位 mm/s。 |
+| NRC_GetCurrentMotorVel | 获取电机转速。 |
+| NRC_Rbt_GetCurrentMotorVel | 获取电机转速（多机版）。 |
+| NRC_GetCurrentSyncPos | 获取外部轴当前位置，该函数可以获取外部轴位置，位置数据由参数引用 position 返回。 |
+| NRC_Rbt_GetCurrentSyncPos | 获取外部轴当前位置(多机版)，该函数可以获取在 coord 坐标系下外部轴位置，位置数据由参数引用 position 返回。 |
+| NRC_GetCurrentTrackingError | 获取当前超差值。 |
+| NRC_GetMaxTrackingError | 获取最大超差值。 |
+
+### 7.2 变量管理
+
+| 函数名称 | 函数功能 |
+| NRC_ReadBoolVar | 读取BOOL变量的值。 |
+| NRC_ReadIntVar | 读取INT变量的值。 |
+| NRC_ReadDoubleVar | 读取DOUBLE变量的值。 |
+| NRC_SetBoolVar | 设置BOOL变量的值。 |
+| NRC_SetIntVar | 设置INT变量的值。 |
+| NRC_SetDoubleVar | 设置DOUBLE变量的值。 |
+| NRC_SetGlobalPositionVariable | 设置全局位置变量坐标值。 |
+| NRC_SetGlobalPositionVariableNote | 设置全局位置变量注释。 |
+| NRC_GetGlobalPositionVariable | 获取全局位置变量坐标值。 |
+| NRC_GetGlobalPositionVariableNote | 获取全局位置变量注释。 |
+| NRC_GetCurrentTime | 获取当前时间。 |
+
+## 第八章：IO与通信控制
+
+概述
+
+本章介绍数字/模拟IO控制、CAN总线通信、EtherCAT配置、外部通信等接口。
+
+### 8.1 IO配置与操作
+
+| 函数名称 | 函数功能 |
+| NRC_GetIOBoardSum | 返回IO板数量。 |
+| NRC_GetIOConfig | 返回特定IO板对应的IO端口数量。 |
+| NRC_DigOut | 打开或者关闭指定的IO的数字输出状态。 |
+| NRC_DigOutByBoard | 根据IO板号，打开或者关闭指定的IO的数字输出状态。 |
+| NRC_ReadDigOut | 读取数字IO输出端口的状态。 |
+| NRC_ReadDigOutByBoard | 根据IO板号，读取数字IO输出端口的状态。 |
+| NRC_ReadDigIn | 读取数字IO输入端口的状态。 |
+| NRC_ReadDigInByBoard | 根据IO板号，读取数字IO输入端口的状态。 |
+| NRC_AnaOut | 设置模拟IO端口输出的值。 |
+| NRC_ReadAnaOut | 读取模拟IO输出端口的状态。 |
+| NRC_ReadAnaIn | 读取模拟IO输入端口的状态。 |
+| NRC_EnableCustomIOFunction | 使能自定义IO功能。 |
+| NRC_SetCustomIODoutConfig | 设置自定义IO dout配置。 |
+| NRC_SetCustomIODinConfig | 设置自定义IO din配置。 |
+| NRC_SetCheckExioEnable | 设置内置tcp接口扩展IO检测使能标志。 |
+| NRC_GetEthercatIOConfig | 获取EthercatIO配置。 |
+
+### 8.2 通信接口
+
+| 函数名称 | 函数功能 |
+| NRC_SetCANBaudRate | 设置CAN通讯的波特率。 |
+| NRC_SendCANData | CAN通讯发送一帧数据。 |
+| NRC_SetCommunicationParam | 调用该接口用于设置外部TCP通信的相关参数。 |
+| NRC_SetCommunicationStatus | 设置TCP通信的开关。 |
+| NRC_SetTcpMessageCallback | 设置外部TCP通信收到消息的回调函数。 |
+| NRC_CommSendMessage | 调用该接口,将向控制器发送消息。 |
+| NRC_GetModbusSlaveConnectStatus | 获取modbus从站连接状态。 |
+| NRC_GetModbusMasterConnectStatus | 获取modbus主站连接状态。 |
+| NRC_SetSocketCustomProtocalCB | 该函数的功能是自定义socket通讯协议。 |
+| NRC_SendSocketCustomProtocal | 发送socket通信。 |
+
+## 第九章：错误处理与消息管理
+
+概述
+
+本章包含错误处理、消息管理、回调函数设置等功能。
+
+### 9.1 消息管理
+
+| 函数名称 | 函数功能 |
+| NRC_SetMsgHappenCallback | 设置消息发生时的回调函数。 |
+| NRC_FirstMessagePop | 弹出队列中最早的消息。 |
+| NRC_LastMessagePop | 弹出队列中最后的消息。 |
+| NRC_GetMessage | 获取队列中第num个消息。 |
+| NRC_GetMessageSize | 获取队列中消息总数。 |
+| NRC_ClearMessage | 获取当前用户坐标编号。 |
+| NRC_TriggerErrorReport | 用户主动触发报错。 |
+
+### 9.2 错误处理
+
+| 函数名称 | 函数功能 |
+| NRC_ClearServoError | 清除伺服错误。 |
+| NRC_ClearAllError | 清除全部错误，清空消息的队列，同时清除伺服错误。 |
+| NRC_SetFaultResetCB | 设置清错按键回调函数,不影响控制器本身的清错功能。 |
+
+## 第十章：示教器与作业文件控制
+
+概述
+
+本章包含示教器交互、作业文件操作、自定义指令等功能。其他指令文档请参考作业文件文档
+
+### 10.1 示教器控制
+
+| 函数名称 | 函数功能 |
+| NRC_GetTeachBoxConnectStatus | 获取是否连接了示教盒。 |
+| NRC_SendCursorJumpCmdToTeachbox | 向示教器发送光标跳行命令,示教器响应后,会将光标跳转到指定作业文件的指定行。 |
+| NRC_GetOpenJobFileName | 获取当前打开的作业文件的名称。 |
+
+### 10.2 作业文件与自定义指令
+
+| 函数名称 | 函数功能 |
+| NRC_SetJobFileCustomInstructionCB | 将一个函数绑定到自定义指令中。 |
+| NRC_SetJobFileCustomInstructionPreTreatmentCB | 将一个函数绑定到自定义指令的预处理函数中。 |
+| NRC_SetJobFileCustomInstructionPostTreatmentCB | 将一个函数绑定到自定义指令的后处理函数中。 |
+| NRC_ParseJobfileToAppendRunInstruction | 把作业文件中的所有指令解析成可以作为追加模式指令的队列。 |
+| NRC_SetCustomFileTransfer | 设置可导入导出的自定义配置文件。 |
+
+## 第十一章：回调函数与周期控制
+
+概述
+
+本章介绍各种回调函数设置、周期控制、实时监控等功能。
+
+### 11.1 回调函数设置
+
+| 函数名称 | 函数功能 |
+| NRC_SetMsgHappenCallback | 设置消息发生时的回调函数。 |
+| NRC_SetSocketCustomProtocalCB | 该函数的功能是自定义socket通讯协议。 |
+| NRC_SetJobFileCustomInstructionCB | 将一个函数绑定到自定义指令中。 |
+| NRC_SetJobFileCustomInstructionPreTreatmentCB | 将一个函数绑定到自定义指令的预处理函数中。 |
+| NRC_SetJobFileCustomInstructionPostTreatmentCB | 将一个函数绑定到自定义指令的后处理函数中。 |
+| NRC_SetTcpMessageCallback | 设置外部TCP通信收到消息的回调函数。 |
+| NRC_SetFaultResetCB | 设置清错按键回调函数,不影响控制器本身的清错功能。 |
+| NRC_robotRunCycle_Callback | 设置一个自定义的无参函数,将每个EtherCat通讯周期(默认1ms)回调一次。 |
+
+以下是各接口详细描述
+
+### NRC_Delayms
+
+| 函数原型 | int NRC_Delayms(int ms); |
+| 功能描述 | 系统延时一定时间。 |
+| 参数说明 | 输入参数：
+    ms为要延时的时间，单位为毫秒 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_LogInfo
+
+| 函数原型 | void NRC_LogInfo(const char* format, ...); |
+| 功能描述 | 向NRC系统中打印日志。 |
+| 参数说明 | 输入参数：
+    format为需要打印的内容 |
+| 返回值 | 无 |
+| 备注说明 | 用法与printf()一致。 |
+
+### NRC_GetNexMotionLibVersion
+
+| 函数原型 | std::string NRC_GetNexMotionLibVersion(); |
+| 功能描述 | 获取NexMotion库版本信息。 |
+| 参数说明 | 无 |
+| 返回值 | 返回NexMotion库版本信息。 |
+| 备注说明 | 无 |
+
+### NRC_GetSyncVersion
+
+| 函数原型 | std::string NRC_GetSyncVersion(); |
+| 功能描述 | 获取同步版本号。 |
+| 参数说明 | 无 |
+| 返回值 | 返回同步版本号。 |
+| 备注说明 | 无 |
+
+### NRC_StartController
+
+| 函数原型 | int NRC_StartController(int netPort = 4); |
+| 功能描述 | 系统启动函数。 |
+| 参数说明 | 输入参数：
+    连接伺服的网口的端口号,默认为4,根据具体工控机型号设置 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 启动系统需要时间，请使用 NRC_GetControlInitComplete() 函数查看系统是否初始化完成，在初始化完成前，请勿调用其他函数。 |
+
+### NRC_GetControlInitComplete
+
+| 函数原型 | int NRC_GetControlInitComplete(); |
+| 功能描述 | 查看系统初始化是否完成。 |
+| 参数说明 | 无 |
+| 返回值 | 返回系统是否初始化完成
+0：表示未完成
+1：表示已完成 |
+| 备注说明 | 无 |
+
+### NRC_SetServoReadyStatus
+
+| 函数原型 | int NRC_SetServoReadyStatus(int status); |
+| 功能描述 | 切换伺服准备状态。 |
+| 参数说明 | 输入参数：
+    输入参数：status  0-伺服禁止  1-伺服允许 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 切换伺服状态前请先检查伺服目前有没报错，如果有报错则无法正常切换伺服的状态。 |
+
+### NRC_GetServoStatus
+
+| 函数原型 | int NRC_GetServoStatus(); |
+| 功能描述 | 获取伺服状态。 |
+| 参数说明 | 无 |
+| 返回值 | 返回伺服状态
+0-伺服禁止
+1-伺服允许（就绪）
+2-伺服报警
+3-伺服允许 |
+| 备注说明 | 无 |
+
+### NRC_SetOperationMode
+
+| 函数原型 | int NRC_SetOperationMode(NRC_OperationMode mode); |
+| 功能描述 | 设置操作模式。 |
+| 参数说明 | 输入参数：
+    mode  0-示教模式 1-远程模式 2-运行模式 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetTeachRunSpeedPer
+
+| 函数原型 | int NRC_SetTeachRunSpeedPer(int speedPer); |
+| 功能描述 | 设置示教速度百分比。 |
+| 参数说明 | 输入参数：
+   speedPer:
+        参数范围：0 < speedPer  <= 100
+        寸动参数: -1，-2, -3   (关节坐标系下：-1表示0.1度，-2表示0.01度,-3表示0.001度；其他模式下：-1表示1mm/s，-2表示0.1mm/s,-3表示0.01mm/s) |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetTeachRunSpeedPer
+
+| 函数原型 | int NRC_GetTeachRunSpeedPer(); |
+| 功能描述 | 获取示教速度百分比。 |
+| 参数说明 | 无 |
+| 返回值 | 返回示教速度百分比
+返回值范围：-2 < NRC_GetTeachRunSpeedPer()  <= 100 |
+| 备注说明 | NRC_GetTeachRunSpeedPer() != 0 |
+
+### NRC_SetAutoRunSpeedPer
+
+| 函数原型 | int NRC_SetAutoRunSpeedPer(int speedPer); |
+| 功能描述 | 设置自动速度百分比。 |
+| 参数说明 | 输入参数：
+    speedPer:
+        参数范围：0 <  speedPer  <= 100 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetAutoRunSpeedPer_robot
+
+| 函数原型 | int NRC_SetAutoRunSpeedPer_robot(int robotNum,int speedPer); |
+| 功能描述 | 设置自动速度百分比(多机版本)。 |
+| 参数说明 | 输入参数：
+    speedPer  参数范围：0 <  speedPer  <= 100
+    robotNum 选择机器人的编号[1,4] |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetAutoRunSpeedPer
+
+| 函数原型 | int NRC_GetAutoRunSpeedPer(); |
+| 功能描述 | 获取自动速度百分比。 |
+| 参数说明 | 无 |
+| 返回值 | 返回自动速度百分比
+返回值范围：0< NRC_GetAutoRunSpeedPer()  <= 100 |
+| 备注说明 | 无 |
+
+### NRC_GetAutoRunSpeedPer_robot
+
+| 函数原型 | int NRC_GetAutoRunSpeedPer_robot(int robotNum); |
+| 功能描述 | 获取自动速度百分比(多机版本)。 |
+| 参数说明 | 输入参数：
+    robotNum 选择机器人的编号[1,4] |
+| 返回值 | 返回自动速度百分比
+返回值范围：0< NRC_GetAutoRunSpeedPer()  <= 100 |
+| 备注说明 | 无 |
+
+### NRC_SetCurrentCoord
+
+| 函数原型 | int NRC_SetCurrentCoord(NRC_COORD coord); |
+| 功能描述 | 切换当前坐标系。 |
+| 参数说明 | 输入参数：
+    coord  0-关节坐标 1-直角坐标 2-工具坐标 3-用户坐标 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetCurrentCoord
+
+| 函数原型 | NRC_COORD NRC_GetCurrentCoord(); |
+| 功能描述 | 获取当前坐标系。 |
+| 参数说明 | 无 |
+| 返回值 | 返回当前坐标系：0-关节坐标 1-直角坐标 2-工具坐标 3-用户坐标 |
+| 备注说明 | 无 |
+
+### NRC_ServoEnable
+
+| 函数原型 | int NRC_ServoEnable(); |
+| 功能描述 | 按下deadman键，使伺服处于上使能的状态。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 按下deadman键,使机器人上电
+使用此接口上电后，再调用对应接口 NRC_ServoEnable() 下电时，可以自动先停止正在运行中的机器人，再进行下电
+仅示教模式下可用，并且示教模式下推荐使用该接口
+调用该函数前，请将伺服准备状态切换至伺服就绪，可调用 NRC_SetServoReadyStatus(int status) 函数切换伺服状态
+成功调用该函数后，伺服将处于上电使能状态，请注意安全 |
+
+### NRC_ServoDisable
+
+| 函数原型 | int NRC_ServoDisable(); |
+| 功能描述 | 松开deadman键，使伺服处于下使能的状态。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 可将通过 NRC_ServoEnable() 接口上电的机器人，进行下电
+成功调用该函数后，伺服将下电，处于未使能状态
+仅示教模式下可用，并且示教模式下推荐使用该接口 |
+
+### NRC_GetPowerOffSaveSignal
+
+| 函数原型 | bool NRC_GetPowerOffSaveSignal(); |
+| 功能描述 | 获取机器人通电状态。 |
+| 参数说明 | 无 |
+| 返回值 | 返回机器人的通电状态：0-未通电 1-已通电 |
+| 备注说明 | 无 |
+
+### NRC_JogMove
+
+| 函数原型 | int NRC_JogMove(int axis, double vel); |
+| 功能描述 | 开始点动某轴。 |
+| 参数说明 | 输入参数：
+    axis 要进行点动的轴，取值范围1-6
+输入参数：
+    vel  轴运动方向和速度，取值范围[-1,-0.01)U(0.01,1]
+正负号代表正反方向
+系数为速度比例，实际速度为示教速度*vel*电机速度 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 调用NRC_JogMove点动结束后必须要调用NRC_JogMoveStop将当前的axis点动的轴给停止，否则会出现点动其他轴的时候之前点动的轴也跟着一起运动 |
+
+### NRC_JogMoveStop
+
+| 函数原型 | int NRC_JogMoveStop(int axis); |
+| 功能描述 | 停止某关节点动。 |
+| 参数说明 | 输入参数：
+    axis 要停止进行点动的轴，取值范围1-6 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 调用NRC_JogMove点动结束后必须要调用NRC_JogMoveStop将当前的axis点动的轴给停止，否则会出现点动其他轴的时候之前点动的轴也跟着一起运动 |
+
+### NRC_JogMoveStopAll
+
+| 函数原型 | int NRC_JogMoveStopAll(); |
+| 功能描述 | 停止所有关节点动。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 调用该函数后，机器人点动将会停止，机器人将减速 |
+
+### NRC_GetOtherToolPos
+
+| 函数原型 | int NRC_GetOtherToolPos(int ToolNum, NRC_Position& position); |
+| 功能描述 | 获取当前位置下其他工具坐标系表示的位置。 |
+| 参数说明 | 输入参数：
+    ToolNum 工具手的编号
+输出参数：
+    position  返回选定工具手下的坐标 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetCurrentPos
+
+| 函数原型 | int NRC_GetCurrentPos(NRC_COORD coord, NRC_Position& position); |
+| 功能描述 | 获取当前位置。 |
+| 参数说明 | 输入参数：
+    coord    0-关节坐标 1-直角坐标 2-工具坐标 3-用户坐标
+输出参数：
+    position  返回选定坐标系下的坐标位置 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_GetCurrentPos
+
+| 函数原型 | int NRC_Rbt_GetCurrentPos(int robotNum, NRC_COORD coord, NRC_Position& position); |
+| 功能描述 | 获取当前位置(多机版)。 |
+| 参数说明 | 输入参数：
+    robotNum 传入机器人编号(1-4)
+    coord    0-关节坐标 1-直角坐标 2-工具坐标 3-用户坐标
+输出参数：
+    position  返回选定坐标系下的坐标位置 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_PositionACStoMCS
+
+| 函数原型 | int NRC_PositionACStoMCS(NRC_Position& posACS, NRC_Position& posMCS); |
+| 功能描述 | 将机器人关节坐标值转换为直角坐标值。 |
+| 参数说明 | 输入参数：
+    posACS  要进行转换的关节坐标值
+输出参数：
+    posMCS  转换的结果通过其返回 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_PositionMCStoACS
+
+| 函数原型 | int NRC_PositionMCStoACS(NRC_Position& posMCS, NRC_Position& posACS); |
+| 功能描述 | 将机器人直角坐标值转换为关节坐标值。 |
+| 参数说明 | 输入参数：
+    posMCS  要进行转换的直角坐标值
+输出参数：
+    posACS  转换的结果通过其返回 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetProgramRunStatus
+
+| 函数原型 | int NRC_GetProgramRunStatus(); |
+| 功能描述 | 获取当前程序运行状态。 |
+| 参数说明 | 无 |
+| 返回值 | 返回机器人当前程序运行状态
+0 程序处于停止状态
+1 程序处于暂停状态
+2 程序处于运行状态 |
+| 备注说明 | 无 |
+
+### NRC_GetRobotRunStatus
+
+| 函数原型 | int NRC_GetRobotRunStatus(); |
+| 功能描述 | 获取当前机器人运动状态。 |
+| 参数说明 | 无 |
+| 返回值 | 返回当前机器人运动状态
+0 机器人处于停止状态
+1 机器人处于运动状态 |
+| 备注说明 | 无 |
+
+### NRC_PowerOn
+
+| 函数原型 | int NRC_PowerOn(); |
+| 功能描述 | 伺服上使能。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 调用该函数前，请将伺服准备状态切换至伺服就绪，可调用 NRC_SetServoReadyStatus(int status) 函数切换伺服状态
+成功调用该函数后，伺服将处于上电使能状态，请注意安全 |
+
+### NRC_PowerOff
+
+| 函数原型 | int NRC_PowerOff(); |
+| 功能描述 | 伺服下使能。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 成功调用该函数后，伺服将下电，处于未使能状态成功调用该函数后，伺服将处于上电使能状态，请注意安全
+请勿在机器人运动时调用该接口，可能会导致机器人突然停止，造成剧烈抖动 |
+
+### NRC_RobotMoveJoint
+
+| 函数原型 | int NRC_RobotMoveJoint(int vel, const NRC_Position& target, int acc, int dec); |
+| 功能描述 | 机器人点到点运行。 |
+| 参数说明 | 输入参数：
+    vel  机器人的运行速度，为机器人最大速度的百分比，参数范围：0 < vel <=  100
+    target  机器人运动目标位置，详见 NRC_Position
+    acc  机器人运行加速度，为机器人各关节最大加速度的百分比，参数范围：0 <  vel <= 100
+    dec  机器人运行减速度，为机器人各关节最大减速度的百分比，参数范围：0 <  vel <= 100 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 调用该函数前，请将伺服上电使能，可调用 NRC_ServoEnable() 函数将伺服上电
+成功调用该函数后，机器人将开始运动，请注意安全 |
+
+### NRC_StartResetPoint
+
+| 函数原型 | int NRC_StartResetPoint(); |
+| 功能描述 | 机器人回到复位点的位置。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 若在示教模式下调用该函数，请先将伺服上电使能，可调用 NRC_ServoEnable() 函数将伺服上电
+成功调用该函数后，机器人将开始运动，请注意安全 |
+
+### NRC_DigOut
+
+| 函数原型 | void NRC_DigOut(int port, int value); |
+| 功能描述 | 打开或者关闭指定的IO的数字输出状态。 |
+| 参数说明 | 输入参数：
+    port  要输出的数字IO端口，最大范围为 1 <= port <= 16，实际范围取决于所连接点IO模块上的IO端口数目
+    value  要输出的状态 0-输出低电平 1-输出高电平 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_DigOutByBoard
+
+| 函数原型 | void NRC_DigOutByBoard(int board_id, int port_id, int value); |
+| 功能描述 | 根据IO板号，打开或者关闭指定的IO的数字输出状态。 |
+| 参数说明 | 输入参数：
+    port_id： 要输出的数字IO端口，最大范围为 1 <= port <= 16，实际范围取决于所连接点IO模块上的IO端口数目
+    value  要输出的状态 0-输出低电平 1-输出高电平
+    board_id  要输出的IO板号，最大范围为 1 <= board_id <= 4，实际范围取决于所连接的IO板数量 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_ReadDigOut
+
+| 函数原型 | int NRC_ReadDigOut(int port); |
+| 功能描述 | 读取数字IO输出端口的状态。 |
+| 参数说明 | 输入参数：
+    port  要读取的数字IO端口，最大范围为 1 <= port <= 16，实际范围取决于所连接点IO模块上的IO端口数目 |
+| 返回值 | 返回该端口当前状态
+0 当前处于低电平
+1 当前处于高电平
+-1该端口不存在 |
+| 备注说明 | 无 |
+
+### NRC_ReadDigOutByBoard
+
+| 函数原型 | int NRC_ReadDigOutByBoard(int board_id, int port_id); |
+| 功能描述 | 根据IO板号，读取数字IO输出端口的状态。 |
+| 参数说明 | 输入参数：
+    board_id  要读取的IO板号，最大范围为 1 <= board_id <= 4，实际范围取决于所连接的IO板数量
+    port_id  要读取的IO板号所对应的数字IO端口，最大范围为 1 <= port <= 16，实际范围取决于该IO板号所对应IO版的IO端口数目 |
+| 返回值 | 返回该端口当前状态
+0 当前处于低电平
+1 当前处于高电平
+-1该端口不存在 |
+| 备注说明 | 无 |
+
+### NRC_ReadDigIn
+
+| 函数原型 | int NRC_ReadDigIn(int port); |
+| 功能描述 | 读取数字IO输入端口的状态。 |
+| 参数说明 | 输入参数：
+    port  要读取的数字IO端口，最大范围为 1 <= port <= 16，实际范围取决于所连接点IO模块上的IO端口数目 |
+| 返回值 | 返回该端口当前状态
+0 当前处于低电平
+1 当前处于高电平
+-1该端口不存在 |
+| 备注说明 | 无 |
+
+### NRC_ReadDigInByBoard
+
+| 函数原型 | int NRC_ReadDigInByBoard(int board_id, int port_id); |
+| 功能描述 | 根据IO板号，读取数字IO输入端口的状态。 |
+| 参数说明 | 输入参数：
+    board_id 要读取的IO板号，最大范围为 1 <= board_id <= 4，实际范围取决于所连接的IO板数量
+    port_id  要读取的IO板号所对应的数字IO端口，最大范围为 1 <= port <= 16，实际范围取决于该IO板号所对应IO版的IO端口数目 |
+| 返回值 | 返回该端口当前状态
+0 当前处于低电平
+1 当前处于高电平
+-1该端口不存在 |
+| 备注说明 | 无 |
+
+### NRC_AnaOut
+
+| 函数原型 | void NRC_AnaOut(int port, double value); |
+| 功能描述 | 设置模拟IO端口输出的值。 |
+| 参数说明 | 输入参数：
+    port  要输出的模拟IO端口，最大范围为 1 <= port <= 16，实际范围取决于所连接点IO模块上的IO端口数目
+    value  选定的模拟IO端口要输出的数值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_ReadAnaOut
+
+| 函数原型 | int NRC_ReadAnaOut(int port,double& value); |
+| 功能描述 | 读取模拟IO输出端口的状态。 |
+| 参数说明 | 输入参数：
+    port  要读取的模拟IO端口，最大范围为 1 <= port <= 16，实际范围取决于所连接点IO模块上的IO端口数目
+    value  返回该端口当前数值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_ReadAnaIn
+
+| 函数原型 | int NRC_ReadAnaIn(int port,double& value); |
+| 功能描述 | 读取模拟IO输入端口的状态。 |
+| 参数说明 | 输入参数：
+    port  要读取的模拟IO端口，最大范围为 1 <= port <= 16，实际范围取决于所连接点IO模块上的IO端口数目
+    value  返回该端口当前数值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetCANBaudRate
+
+| 函数原型 | void NRC_SetCANBaudRate(unsigned int port, unsigned int baud); |
+| 功能描述 | 设置CAN通讯的波特率。 |
+| 参数说明 | 输入参数：
+    port  设置使用的can端口号
+    baud  设置的波特率 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SendCANData
+
+| 函数原型 | void NRC_SendCANData(unsigned int port, unsigned int sendCanID, const unsigned char buff[8], unsigned int sendLen=8); |
+| 功能描述 | CAN通讯发送一帧数据。 |
+| 参数说明 | 输入参数：
+    port  设置使用的can端口号
+    sendID  设置帧ID通过该变量返回
+    sendlen 设置发送数据长度
+    buff 要发送的数据 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_ReadBoolVar
+
+| 函数原型 | bool NRC_ReadBoolVar(int num); |
+| 功能描述 | 读取BOOL变量的值。 |
+| 参数说明 | 输入参数：
+    num  变量BOOL的编号，取值范围：0 < num <= 999 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_ReadIntVar
+
+| 函数原型 | int NRC_ReadIntVar(int num); |
+| 功能描述 | 读取INT变量的值。 |
+| 参数说明 | 输入参数：
+    num  变量INT的编号，取值范围：0 < num <= 999 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_ReadDoubleVar
+
+| 函数原型 | double NRC_ReadDoubleVar(int num); |
+| 功能描述 | 读取DOUBLE变量的值。 |
+| 参数说明 | 输入参数：
+    num  变量DOUBLE的编号，取值范围：0 < num <= 999 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetBoolVar
+
+| 函数原型 | int NRC_SetBoolVar(int num, bool value); |
+| 功能描述 | 设置BOOL变量的值。 |
+| 参数说明 | 输入参数：
+    num  变量BOOL的编号，取值范围：0 < num <= 999
+    value 要设置的目标值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetIntVar
+
+| 函数原型 | int NRC_SetIntVar(int num, int value); |
+| 功能描述 | 设置INT变量的值。 |
+| 参数说明 | 输入参数：
+    num  变量INT的编号，取值范围：0 < num <= 999
+    value 要设置的目标值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetDoubleVar
+
+| 函数原型 | int NRC_SetIntVar(int num, double value); |
+| 功能描述 | 设置DOUBLE变量的值。 |
+| 参数说明 | 输入参数：
+    num  变量DOUBLE的编号，取值范围：0 < num <= 999
+    value 要设置的目标值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetGlobalPositionVariable
+
+| 函数原型 | int NRC_SetGlobalPositionVariable(int num, const NRC_Position &pos_set); |
+| 功能描述 | 设置全局位置变量坐标值。 |
+| 参数说明 | 输入参数：
+    num   要设置的全局位置变量编号,0 < num <= 999
+    pos_set  要设置的全局位置变量坐标值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetGlobalPositionVariableNote
+
+| 函数原型 | int NRC_SetGlobalPositionVariableNote(int num, std::string note); |
+| 功能描述 | 设置全局位置变量注释。 |
+| 参数说明 | 输入参数：
+    num   要设置的全局位置变量编号,0 < num <= 999
+    note  给全局变量设置的注释 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetGlobalPositionVariable
+
+| 函数原型 | int NRC_GetGlobalPositionVariable(int num, NRC_Position& pos_get); |
+| 功能描述 | 获取全局位置变量坐标值。 |
+| 参数说明 | 输入参数：
+    num   要获取的全局位置变量编号,0 < num <= 999
+    pos_get 要获取的全局位置变量坐标值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetGlobalPositionVariableNote
+
+| 函数原型 | int NRC_GetGlobalPositionVariableNote(int num, std::string& note); |
+| 功能描述 | 获取全局位置变量注释。 |
+| 参数说明 | 输入参数：
+    num   要获取的全局位置变量编号,0 < num <= 999
+    note  获取全局变量的注释 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetRobotTypeConfig
+
+| 函数原型 | int NRC_SetRobotTypeConfig(const std::string &type); |
+| 功能描述 | 设置机器人类型。 |
+| 参数说明 | 输出参数：
+    type ：
+  - "R_GENERAL_6S" 六轴
+  - "R_SCARA" 四轴SCARA
+  - "R_FOURAXIS_PALLET" 四轴码垛
+  - "R_FOURAXIS" 四轴
+  - "R_GENERAL_1S" 一轴
+  - "R_GENERAL_5S" 五轴
+  - "R_GENERAL_6S_1" 六轴异形一
+  - "R_SCARA_TWOAXIS" 两轴SCARA
+  - "R_SCARA_THREEAXIS" 三轴SCARA
+  - "R_THREE_CARTESIAN_COORDINATE" 三轴直角
+  - "R_THREE_CARTESIAN_COORDINATE_1" 三轴异形一
+  - "R_GENERAL_7S_RBT" 七轴
+  - "R_SCARA_1" 四轴SCARA异形一 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_SetRobotTypeConfig
+
+| 函数原型 | int NRC_Rbt_SetRobotTypeConfig(int robotNum, const std::string &type); |
+| 功能描述 | 设置机器人类型（多机版）。 |
+| 参数说明 | 输出参数：
+    index  当前作业文件要运行的总次数，设置为0时循环运行，参数范围：index >= 0 |
+| 返回值 | 输出参数：
+    robotNum 机器人编号(1-4)
+输出参数：
+    type：
+  - "R_GENERAL_6S" 六轴
+  - "R_SCARA" 四轴SCARA
+  - "R_FOURAXIS_PALLET" 四轴码垛
+  - "R_FOURAXIS" 四轴
+  - "R_GENERAL_1S" 一轴
+  - "R_GENERAL_5S" 五轴
+  - "R_GENERAL_6S_1" 六轴异形一
+  - "R_SCARA_TWOAXIS" 两轴SCARA
+  - "R_SCARA_THREEAXIS" 三轴SCARA
+  - "R_THREE_CARTESIAN_COORDINATE" 三轴直角
+  - "R_THREE_CARTESIAN_COORDINATE_1" 三轴异形一
+  - "R_GENERAL_7S_RBT" 七轴
+  - "R_SCARA_1" 四轴SCARA异形一 |
+| 备注说明 | 无 |
+
+### NRC_GetRobotTypeConfig
+
+| 函数原型 | int NRC_GetRobotTypeConfig(std::string& type); |
+| 功能描述 | 获取机器人类型。 |
+| 参数说明 | 输出参数：
+    type:
+  - "R_GENERAL_6S" 六轴
+  - "R_SCARA" 四轴SCARA
+  - "R_FOURAXIS_PALLET" 四轴码垛
+  - "R_FOURAXIS" 四轴
+  - "R_GENERAL_1S" 一轴
+  - "R_GENERAL_5S" 五轴
+  - "R_GENERAL_6S_1" 六轴异形一
+  - "R_SCARA_TWOAXIS" 两轴SCARA
+  - "R_SCARA_THREEAXIS" 三轴SCARA
+  - "R_THREE_CARTESIAN_COORDINATE" 三轴直角
+  - "R_THREE_CARTESIAN_COORDINATE_1" 三轴异形一
+  - "R_GENERAL_7S_RBT" 七轴
+  - "R_SCARA_1" 四轴SCARA异形一 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_GetRobotTypeConfig
+
+| 函数原型 | int NRC_GetRobotTypeConfig(std::string& type); |
+| 功能描述 | 获取机器人类型（多机版）。 |
+| 参数说明 | 输出参数：
+    robotNum  机器人编号(1-4)
+    type:
+  - "R_GENERAL_6S" 六轴
+  - "R_SCARA" 四轴SCARA
+  - "R_FOURAXIS_PALLET" 四轴码垛
+  - "R_FOURAXIS" 四轴
+  - "R_GENERAL_1S" 一轴
+  - "R_GENERAL_5S" 五轴
+  - "R_GENERAL_6S_1" 六轴异形一
+  - "R_SCARA_TWOAXIS" 两轴SCARA
+  - "R_SCARA_THREEAXIS" 三轴SCARA
+  - "R_THREE_CARTESIAN_COORDINATE" 三轴直角
+  - "R_THREE_CARTESIAN_COORDINATE_1" 三轴异形一
+  - "R_GENERAL_7S_RBT" 七轴
+  - "R_SCARA_1" 四轴SCARA异形一 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetServoMapRelation
+
+| 函数原型 | int NRC_SetServoMapRelation(std::vector<int> servoMap,std::vector<int> syncServoMap); |
+| 功能描述 | 设置伺服映射关系。 |
+| 参数说明 | 输入参数：
+    servoMap 伺服映射关系，个数为设置的机器人总轴数，值为每一轴所连接的伺服编号
+    syncServoMap  外部轴伺服映射关系，个数为3，值为每一轴所连接的伺服编号,若外部轴不足3个，对应位置值为0 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 机器人轴与伺服对应关系为：
+    - 1轴 连接 第2个伺服
+    - 2轴 连接 第3个伺服
+    - 3轴 连接 第1个伺服
+    - 4轴 连接 第4个伺服
+    - 5轴 连接 第6个伺服
+    - 6轴 连接 第5个伺服
+    - 则 servoMap 的值为 { 2, 3, 1, 4, 6, 5 }
+外部轴个数与伺服对应关系：
+    - 无外部轴，则 syncServoMap 值为 {0 ,0 ,0}
+    - 一个外部轴，则 syncServoMap 值为 {7 ,0 ,0}
+    - 两个外部轴，则 syncServoMap 值为 {7 ,8 ,0}
+以后替代函数为NRC_SetAllServoMapRelation！ |
+
+### NRC_SetAllServoMapRelation
+
+| 函数原型 | int NRC_SetAllServoMapRelation(std::vector<int> servoMap,int syncGroupSum, int syncType[], std::vector<std::vector<int>> syncServoMap); |
+| 功能描述 | 设置伺服映射关系(仅一个机器人的时候可以使用)。 |
+| 参数说明 | 输入参数：
+    servoMap  伺服映射关系，个数为设置的机器人总轴数，值为每一轴所连接的伺服编号
+    syncGroupSum  外部轴组最大数目，最大为3,最多支持两个双变位机加一个地轨
+    syncType  外部轴组类型，0:无，1:单轴变位机，2:双轴变位机，3:地轨
+    syncServoMap  外部轴伺服映射关系 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 机器人轴与伺服对应关系为：
+    - 1轴 连接 第2个伺服
+    - 2轴 连接 第3个伺服
+    - 3轴 连接 第1个伺服
+    - 4轴 连接 第4个伺服
+    - 5轴 连接 第6个伺服
+    - 6轴 连接 第5个伺服
+    - 则 servoMap 的值为 { 2, 3, 1, 4, 6, 5 }
+外部轴个数与伺服对应关系
+    - 无外部轴，则 syncGroupSum 值为0,
+    - 一个单轴变位机，则 syncGroupSum 值1,syncType为{1,0,0},syncServoMap为{{7}}
+    - 两个双轴变位机，一个地轨，则 syncGroupSum 值3,syncType为{2,2,3},syncServoMap为{{7,8},{9,10},{11}} |
+
+### NRC_Rbt_SetAllServoMapRelation
+
+| 函数原型 | int NRC_Rbt_SetAllServoMapRelation(unsigned int robotSum, std::vector<std::string> robotType, std::vector<std::vector<int>> servoMap, std::vector<NRC_SyncParam> syncMap); |
+| 功能描述 | 设置伺服映射关系 (多机版)。 |
+| 参数说明 | 输入参数：
+    robotSum  机器人总数,最大为4
+    servoMap  伺服映射关系，个数为设置的机器人总轴数，值为每一轴所连接的伺服编号
+    syncGroupSum  外部轴组最大数目，最大为3,最多支持两个双变位机加一个地轨
+    syncType  外部轴组类型，0:无，1:单轴变位机，2:双轴变位机，3:地轨
+    syncServoMap  外部轴伺服映射关系 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 机器人轴与伺服对应关系为(以两个四轴机器人为例)：
+   - 机器人1的1轴 连接 第2个伺服
+   - 机器人1的2轴 连接 第3个伺服
+ - 机器人1的3轴 连接 第1个伺服
+   -机器人1的 4轴 连接 第4个伺服
+ - 机器人2的1轴 连接 第1个伺服
+   - 机器人2的2轴 连接 第2个伺服
+   - 机器人2的3轴 连接 第3个伺服
+   -机器人2的 4轴 连接 第4个伺服
+则 servoMap 的值为 {{ 2, 3, 1, 4 },{ 1, 2, 3, 4 }}
+外部轴个数与伺服对应关系(以两个四轴机器人为例)：
+无外部轴，则syncGroupSum 值为0,
+一个单轴变位机 则syncMap 值为{NRC_SyncMap one, NRC_SyncMap two},
+NRC_SyncMap one
+{
+ syncGroupSum = 1;
+ std::vector<std::vector<int>> syncServoMap = {{5}};
+ std::vector<std::vector<int>> syncType = {1,0,0};
+}
+NRC_SyncMap two 和NRC_SyncMap one一样;
+两个双轴变位机，一个地轨，则syncMap 值为{NRC_SyncMap one}(以一个机器人为例),
+NRC_SyncMap one
+{
+ syncGroupSum = 3;
+ std::vector<std::vector<int>> syncServoMap = {{5,6},{7,8},{9}}
+ std::vector<std::vector<int>> syncType = {2,2,3};
+ } |
+
+### NRC_GetConnectServoTypeList
+
+| 函数原型 | std::vector<std::string> NRC_GetConnectServoTypeList(int nameType = 0); |
+| 功能描述 | 获取连接的伺服类型列表。 |
+| 参数说明 | 输入参数：
+    nameType  伺服名称类型,0:中文名称,1:英文名称 |
+| 返回值 | 伺服名称列表 |
+| 备注说明 | 无 |
+
+### NRC_GetSlaveNumByID
+
+| 函数原型 | std::vector<int> NRC_GetSlaveNumByID(unsigned int vendorID, unsigned int productCode); |
+| 功能描述 | 通过从站vendorID和productCode获取从站的编号列表。 |
+| 参数说明 | 输入参数：
+    vendorID  从站的vendorID
+    productCode  从站的productCode |
+| 返回值 | 所有该类型从站的编号的列表 |
+| 备注说明 | 无 |
+
+### NRC_GetPDOAddrMap
+
+| 函数原型 | unsigned char * NRC_GetPDOAddrMap(unsigned int slaveNum, unsigned short index); |
+| 功能描述 | 获取从站PDO的映射地址。 |
+| 参数说明 | 输入参数：
+    slaveNum 从站编号
+    index  PDO的索引 |
+| 返回值 | PDO的映射地址，若从站编号错误或无该PDO，则返回nullptr，若该索引的PDO存在多个，将只会返回1个 |
+| 备注说明 | 返回的映射地址，需要根据PDO的数据类型，自行转换指针类型后才能使用 |
+
+### NRC_GetPDOAddrMap
+
+| 函数原型 | unsigned char * NRC_GetPDOAddrMap(unsigned int slaveNum, unsigned short index, unsigned short subindex); |
+| 功能描述 | 获取从站PDO的映射地址。 |
+| 参数说明 | 输入参数：
+    slaveNum 从站编号
+    index  PDO的索引
+    subindex   PDO的子索引 |
+| 返回值 | PDO的映射地址，若从站编号错误或无该PDO，则返回nullptr |
+| 备注说明 | 返回的映射地址，需要根据PDO的数据类型，自行转换指针类型后才能使用 |
+
+### NRC_GetEthercatIOConfig
+
+| 函数原型 | int GetEthercatIOConfig(int &sum, std::vector<std::string> &typeVec); |
+| 功能描述 | 获取EthercatIO配置。 |
+| 参数说明 | 输入参数：
+    sum 返回EthercatIO板数目
+    typeVec  返回EthercatIO类型 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_EnableCustomIOFunction
+
+| 函数原型 | void NRC_EnableCustomIOFunction(); |
+| 功能描述 | 使能自定义IO功能。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在调用控制器启动函数 NRC_StartController 前调用使能,否则将不生效 |
+
+### NRC_SetCustomIODoutConfig
+
+| 函数原型 | int NRC_SetCustomIODoutConfig(unsigned int sum, int* addr); |
+| 功能描述 | 设置自定义IO dout配置。 |
+| 参数说明 | 输入参数：
+    sum  自定义IO dout的数目，参数范围：sum >= 0
+    addr 自定义IO dout的对应地址,一个int数值对应1个端口 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 设置自定义IO dout的数目和对应地址，1表示高电平，0表示低电平 |
+
+### NRC_SetCustomIODinConfig
+
+| 函数原型 | int NRC_SetCustomIODinConfig(unsigned int sum, int* addr); |
+| 功能描述 | 设置自定义IO din配置。 |
+| 参数说明 | 输入参数：
+    sum  自定义IO din的数目，参数范围：sum >= 0
+    addr 自定义IO din的对应地址,一个int数值对应1个端口 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 设置自定义IO din的数目和对应地址，1表示高电平，0表示低电平 |
+
+### NRC_SetCheckExioEnable
+
+| 函数原型 | void NRC_SetCheckExioEnable(bool enable); |
+| 功能描述 | 设置内置tcp接口扩展IO检测使能标志。 |
+| 参数说明 | 输入参数：
+    enable 默认为true,检测扩展IO,设置为false时,将不检测扩展IO |
+| 返回值 | 无 |
+| 备注说明 | 请在调用控制器启动函数 NRC_StartController 前设置使能标志,否则将不生效 |
+
+### NRC_SetRobotDHConfig
+
+| 函数原型 | int NRC_SetRobotDHConfig(NRC_RobotDHConfig config); |
+| 功能描述 | 设置机器人DH参数。 |
+| 参数说明 | 输入参数：
+    config 机器人DH参数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_GetRobotDHConfig
+
+| 函数原型 | int NRC_GetRobotDHConfig(NRC_RobotDHConfig& config); |
+| 功能描述 | 获取机器人DH参数。 |
+| 参数说明 | 输出参数：
+    config 机器人DH参数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetRobotJointConfig
+
+| 函数原型 | int NRC_SetRobotJointConfig(int axisNum, NRC_RobotJointConfig config); |
+| 功能描述 | 设置机器人关节参数。 |
+| 参数说明 | 输入参数：
+    axisNum 要设置的轴的序号，参数范围：1 <= axisNum <= 机器人轴总数
+    config   机器人DH参数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_SetRobotDecareConfig
+
+| 函数原型 | int NRC_SetRobotDecareConfig(NRC_RobotDecareConfig config); |
+| 功能描述 | 设置机器人笛卡尔参数。 |
+| 参数说明 | 输入参数：
+    config 机器人的笛卡尔参数，具体看NRC_RobotDecareConfig结构体内容 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_GetRobotDecareConfig
+
+| 函数原型 | int NRC_GetRobotDecareConfig(NRC_RobotDecareConfig& config); |
+| 功能描述 | 获取机器人笛卡尔参数。 |
+| 参数说明 | 输出参数：
+    config 机器人的笛卡尔参数，具体看NRC_RobotDecareConfig结构体内容 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetJogJointSpeedConfig
+
+| 函数原型 | int NRC_SetJogJointSpeedConfig(int axisNum, double maxSpeed, double acc); |
+| 功能描述 | 点动关节速度设置。 |
+| 参数说明 | 输入参数：
+    axisNum 要设置的轴的序号，参数范围：1 <= axisNum <= 机器人轴总数
+    maxSpeed  点动时，该轴可以达到的最大速度，单位：度/秒
+    acc  点动时，该轴的加速度，单位：度/平方秒 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_GetJogJointSpeedConfig
+
+| 函数原型 | int NRC_GetJogJointSpeedConfig(int axisNum, double& maxSpeed, double& acc); |
+| 功能描述 | 获取点动关节速度。 |
+| 参数说明 | 输入参数：
+    axisNum 要设置的轴的序号，参数范围：1 <= axisNum <= 机器人轴总数
+输出参数：
+    maxSpeed  点动时，该轴可以达到的最大速度，单位：度/秒
+    acc  点动时，该轴的加速度，单位：度/平方秒 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetJogRectangularSpeedConfig
+
+| 函数原型 | int NRC_SetJogRectangularSpeedConfig(double maxSpeed, double acc); |
+| 功能描述 | 点动直角速度设置。 |
+| 参数说明 | 输入参数：
+    maxSpeed 点动时，直角坐标可以达到的最大速度，单位：毫米/秒
+    acc  点动时，直角坐标的加速度，单位：毫米/平方秒 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_GetJogRectangularSpeedConfig
+
+| 函数原型 | int NRC_GetJogRectangularSpeedConfig(double& maxSpeed, double& acc); |
+| 功能描述 | 获取点动直角速度。 |
+| 参数说明 | 输出参数：
+    maxSpeed 点动时，直角坐标可以达到的最大速度，单位：毫米/秒
+    acc  点动时，直角坐标的加速度，单位：毫米/平方秒 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetJogSensitivitySpeedConfig
+
+| 函数原型 | int NRC_SetJogSensitivitySpeedConfig(double sensitivity); |
+| 功能描述 | 设置点动灵敏度。 |
+| 参数说明 | 输入参数：
+    sensitivity  该值越小，点动响应越慢，该值越大，点动误差越大，误差较大时，可能引起机器人抖动，单位：度，默认初始值0.001，参数范围：0.0001 <= sensitivity < 1 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_SetInterpolationMethod
+
+| 函数原型 | int NRC_SetInterpolationMethod(int method); |
+| 功能描述 | 设置机器人插补方式。 |
+| 参数说明 | 输入参数：
+    method 机器人运动时的插补方式：
+  - 0 S型插补，机器人加减速较为平滑，但相对于梯形插补加减速较慢，一般大型机器人用该插补方式
+  - 1 梯形插补，机器人加减速较为迅速，但容易造成机器人抖动、过载等现象，一般小型机器人用该插补方式 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_SetAbsolutePosResolution
+
+| 函数原型 | int NRC_SetAbsolutePosResolution(double resolution); |
+| 功能描述 | 设置机器人绝对位置分辨率。 |
+| 参数说明 | 输入参数：
+    resolution 机器人对位置的分辨率，当两个位置之间的差距小于该值时，机器人将认为这两个位置为同一位置，单位：度，参数范围：0.0001 <= resolution <= 0.1 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_SetDynamicTrackingErrorMaxAllow
+
+| 函数原型 | int NRC_SetDynamicTrackingErrorMaxAllow(int trackingError[]); |
+| 功能描述 | 设置最大允许动态超差值。 |
+| 参数说明 | 输入参数：
+    trackingError 最大允许动态超差值，当超差值大于该值时，机器人将停止运行，数组成员个数应不小于机器人的轴数，单位：万分之一度，参数范围：100 <= trackingError <= 5000000 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_SetStaticTrackingErrorMaxAllow
+
+| 函数原型 | int NRC_SetStaticTrackingErrorMaxAllow(int trackingError[]); |
+| 功能描述 | 设置最大允许静态超差值。 |
+| 参数说明 | 输入参数：
+    trackingError 最大允许静态超差值，当超差值大于该值时，机器人将停止运行，数组成员个数应不小于机器人的轴数，单位：万分之一度，参数范围：100 <= trackingError <= 5000000 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_SetRobotRangeLimit
+
+| 函数原型 | int NRC_SetRobotRangeLimit(NRC_RobotRangeLimit range, bool enable, int robotRangeNum,int workType, bool isInInterfer, int port, int value); |
+| 功能描述 | 设置机器人范围限制。 |
+| 参数说明 | 输入参数：
+    range  see NRC_RobotRangeLimit
+    enable 使能机器人范围，参数范围：0 关闭，１使能
+    robotRangeNum 机器人范围编号，参数范围：0 < robotRangeNum < 100
+    workType 机器人范围生效方式，参数范围：0 输出状态，１触发停止
+    isInInterfer 生效范围，参数范围：true 设置范围内生效，false 设置范围外生效
+    port 输出io端口号，仅在workType为０时有效
+    value 输出io高低电平，参数范围：0 低电平，１高电平 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_GetRobotRangeLimit
+
+| 函数原型 | int NRC_GetRobotRangeLimit(int robotRangeNum, NRC_RobotRangeLimit& range, bool &enable, int &workType, bool &isInInterfer, int &port, int &value); |
+| 功能描述 | 获取机器人范围限制。 |
+| 参数说明 | 输入参数：
+    robotRangeNum 机器人范围编号，参数范围：0 < robotRangeNum < 100
+输出参数：
+    range  see NRC_RobotRangeLimit
+    enable 使能机器人范围，参数范围：0 关闭，１使能
+    workType 机器人范围生效方式，参数范围：0 输出状态，１触发停止
+    isInInterfer 生效范围，参数范围：true 设置范围内生效，false 设置范围外生效
+    port 输出io端口号，仅在workType为０时有效
+    value 输出io高低电平，参数范围：0 低电平，１高电平 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetTeachMaxStepSpeed
+
+| 函数原型 | int NRC_SetTeachMaxStepSpeed(int maxJointSpeed, int maxDecareSpeed); |
+| 功能描述 | 设置示教模式最大单步速度。 |
+| 参数说明 | 输入参数：
+    maxJointSpeed  示教模式下单步运行时最大关节运行速度，单位百分比，参数范围：0 < maxJointSpeed <= 100
+    maxDecareSpeed  示教模式下单步运行时最大直线运行速度，单位mm/s，参数范围：2 <= maxJointSpeed <= 9999 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_GetTeachMaxStepSpeed
+
+| 函数原型 | int NRC_GetTeachMaxStepSpeed(int &maxJointSpeed, int &maxDecareSpeed); |
+| 功能描述 | 获取示教模式最大单步速度。 |
+| 参数说明 | 输出参数：
+    maxJointSpeed  示教模式下单步运行时最大关节运行速度，单位百分比，参数范围：0 < maxJointSpeed <= 100
+    maxDecareSpeed  示教模式下单步运行时最大直线运行速度，单位mm/s，参数范围：2 <= maxJointSpeed <= 9999 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetCurrentPosToZeroPos
+
+| 函数原型 | int NRC_SetCurrentPosToZeroPos(int axisNum,bool mod); |
+| 功能描述 | 将当前位置设置为零点或清除多圈值。 |
+| 参数说明 | 输入参数：
+    axisNum  操作的轴的序号，当axisNum为0时，表示全部轴，参数范围：0 <= axisNum <= 机器人轴总数
+    mod  为设置零点或清除多圈值，0为设置零点，1为清除多圈值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数
+执行该函数大约需要两三秒时间
+对于大多数类型的伺服，执行该函数时，会使伺服使能上电，请注意安全 |
+
+### NRC_Rbt_SetCurrentPosToZeroPos
+
+| 函数原型 | int NRC_Rbt_SetCurrentPosToZeroPos(int robotNum, int axisNum,bool mod); |
+| 功能描述 | 将当前位置设置为零点或清除多圈值(多机版)。 |
+| 参数说明 | 输入参数：
+    robotNum  需要设置零点或清空多圈值的机器人编号
+    axisNum  操作的轴的序号，当axisNum为0时，表示全部轴，参数范围：0 <= axisNum <= 机器人轴总数
+    mod  为设置零点或清除多圈值，0为设置零点，1为清除多圈值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数
+执行该函数大约需要两三秒时间
+对于大多数类型的伺服，执行该函数时，会使伺服使能上电，请注意安全 |
+
+### NRC_Rbt_SetSingleCircleValue
+
+| 函数原型 | int NRC_Rbt_SetSingleCircleValue(int robotNum, const std::vector<int>& value); |
+| 功能描述 | 设置零点位置单圈值(多机版)。 |
+| 参数说明 | 输入参数：
+    robotNum  需要设置零点或清空多圈值的机器人编号
+    value  传入各个轴零点位置单圈值数组，0 < value.size() <= 7 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 此操作有可能导致机器人精度丢失、无法正常运行、曾建立的点位无法运行等问题，请谨慎操作 |
+
+### NRC_Rbt_GetSingleCircleValue
+
+| 函数原型 | int NRC_Rbt_GetSingleCircleValue(int robotNum, std::vector<int>& value); |
+| 功能描述 | 获取零点位置单圈值(多机版)。 |
+| 参数说明 | 输入参数：
+    robotNum  需要设置零点或清空多圈值的机器人编号
+输出参数：
+    value  获取到的值存入此数组 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetUserCoordParm
+
+| 函数原型 | int NRC_SetUserCoordParm(int userNum, const NRC_Position& deviation); |
+| 功能描述 | 设置用户坐标参数。 |
+| 参数说明 | 输入参数：
+    userNum  要设置的用户坐标系的编号，参数范围：0 < userNum < 1000
+    deviation  用户坐标系原点相对机器人直角坐标系原点的偏移量
+        - deviation.coord 该参数无用
+        - deviation.pos[0]-deviation.pos[2] 分别为x,y,z三轴位置的偏移量，单位：毫米
+        - deviation.pos[3]-deviation.pos[5] 分别为x,y,z三轴方向的偏移量，单位：弧度 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 设置用户坐标系原点相对机器人直角坐标系原点的偏移量，从而确定该用户坐标系
+由于实际使用中，很难测量方向的偏移量，所有该函数很少使用，一般使用 NRC_CalibrationUserCoord(int userNum, NRC_Position& origin, NRC_Position& X_Axis, NRC_Position& XOY_Plane) 函数对用户坐标进行标定，自动计算出偏移量 |
+
+### NRC_GetUserCoordParm
+
+| 函数原型 | int NRC_GetUserCoordParm(int userNum,NRC_Position& deviation); |
+| 功能描述 | 获取用户坐标参数。 |
+| 参数说明 | 输入参数：
+    userNum  用户坐标系的编号，参数范围：0 < userNum < 1000
+输出参数：
+    deviation  用户坐标系原点相对机器人直角坐标系原点的偏移量
+        - deviation.coord 该参数无用
+        - deviation.pos[0]-deviation.pos[2] 分别为x,y,z三轴位置的偏移量，单位：毫米
+        - deviation.pos[3]-deviation.pos[5] 分别为x,y,z三轴方向的偏移量，单位：弧度 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_CalibrationUserCoord
+
+| 函数原型 | int NRC_CalibrationUserCoord(int userNum, const NRC_Position& origin, const NRC_Position& X_Axis, const NRC_Position& XOY_Plane); |
+| 功能描述 | 标定用户坐标，标定用户坐标系，自动计算用户坐标系原点相对机器人直角坐标系原点的偏移量，从而确定该用户坐标系。 |
+| 参数说明 | 输入参数：
+    userNum 要标定的用户坐标系的编号，参数范围：0 < userNum < 10
+    origin  用户坐标系原点在机器人直角坐标系中的位置
+    X_Axis  用户坐标系X轴正方向上任一点在机器人直角坐标系中的位置
+    XOY_Plane 用户坐标系XOY平面上任一点在机器人直角坐标系中的位置 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SwitchUserCoord
+
+| 函数原型 | int NRC_SwitchUserCoord(int tagetUser); |
+| 功能描述 | 切换当前用户坐标。 |
+| 参数说明 | 输入参数：
+    tagetUser 要切换的目标用户坐标系的编号，参数范围：0 < tagetUser < 10 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetCurrentUserCoord
+
+| 函数原型 | int NRC_GetCurrentUserCoord(); |
+| 功能描述 | 获取当前用户坐标编号。 |
+| 参数说明 | 无 |
+| 返回值 | 用户坐标编号 |
+| 备注说明 | 无 |
+
+### NRC_SetToolCoordParm
+
+| 函数原型 | int NRC_SetToolCoordParm(int toolNum, const NRC_Position& deviation, const std::vector<double>& payload = std::vector<double>(5, 0.0), bool load = false); |
+| 功能描述 | 设置工具手参数。 |
+| 参数说明 | 输入参数：
+    toolNum  要设置的工具手的编号，参数范围：0 < toolNum < 1000
+    deviation  工具手末端位置相对机器人末端位置的偏移量
+         - deviation.coord 该参数无用
+         - deviation.pos[0]-deviation.pos[2] 分别为x,y,z三轴位置的偏移量，单位：毫米
+         - deviation.pos[3]-deviation.pos[5] 分别为x,y,z三轴方向的偏移量，对于四轴SCARA机器人该参数无用，单位：弧度
+    payload  当前作业文件要运行的总次数，设置为0时循环运行，参数范围：index >= 0
+         - payload[0] 负载质量，单位：千克
+         - payload[1] 负载惯量，单位：0.001千克每平方米
+         - payload[2]~payload[4] 分别代表质心X、Y、Z，单位：米，范围[-999999,999999]
+    load  是否修改负载质量等参数，默认为false 不修改，true 则进行修改 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 实际使用中，一般根据工具手的设计尺寸图，直接填入该参数 |
+
+### NRC_GetToolCoordParm
+
+| 函数原型 | int NRC_GetToolCoordParm(int toolNum, NRC_Position& deviation, std::vector<double>& payload); |
+| 功能描述 | 获取工具手参数。 |
+| 参数说明 | 输入参数：
+    toolNum  要获取的工具手的编号，参数范围：0 < toolNum < 1000
+输出参数：
+    deviation 要获取到的工具手参数,工具手末端位置相对机器人末端位置的偏移量
+    payload  要获取到的工具手负载质量等参数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_CalibrationToolCoord_7Pos
+
+| 函数原型 | int NRC_CalibrationToolCoord_7Pos(int toolNum, NRC_Position& pos1, NRC_Position& pos2, NRC_Position& pos3, NRC_Position& pos4, NRC_Position& pos5, NRC_Position& pos6, NRC_Position& pos7, int calibrationPointNum = 7); |
+| 功能描述 | 标定工具手--7点标定法，标定工具手，自动计算工具手末端位置相对机器人末端位置的偏移量，从而确定该工具坐标系。 |
+| 参数说明 | 输入参数：
+    toolNum 要获取的工具手的编号，参数范围：0 < toolNum < 1000
+    pos1 将工具手末端对准一个固定尖端，并保持工具手垂直的一个位置
+    pos2 将工具手末端对准一个固定尖端，选取一个位置，不能和pos1，pos3，pos4是同一位置
+    pos3 将工具手末端对准一个固定尖端，选取一个位置，不能和pos1，pos2，pos4是同一位置
+    pos4 将工具手末端对准一个固定尖端，选取一个位置，不能和pos1，pos2，pos3是同一位置
+    pos5 保持工具手垂直的一个位置，可以和pos1点是同一位置
+    pos6 相对pos5的X轴正方向上的一个位置
+    pos7 相对pos6的Y轴正方向上的一个位置
+    calibrationPointNum 6:六点标定,7:七点标定 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 7点标定法仅对六轴串联机器人有效！ |
+
+### NRC_SwitchToolCoord
+
+| 函数原型 | int NRC_SwitchToolCoord(int tagetTool); |
+| 功能描述 | 切换当前工具手。 |
+| 参数说明 | 输入参数：
+    tagetUser 要切换的目标工具手的编号，0表示无工具手，参数范围：0 <= tagetTool < 10 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetCurrentToolCoord
+
+| 函数原型 | int NRC_GetCurrentToolCoord(); |
+| 功能描述 | 获取当前工具手编号。 |
+| 参数说明 | 无 |
+| 返回值 | 当前工具手的编号，工具手初始默认值为0，即无工具手 |
+| 备注说明 | 无 |
+
+### NRC_CalibrationToolCoord_2Pos_SetPos
+
+| 函数原型 | int NRC_CalibrationToolCoord_2Pos_SetPos(int posNum, const NRC_Position& pos); |
+| 功能描述 | 2点标定-设置点数据。 |
+| 参数说明 | 输入参数：
+    posNum 标定的点的编号，参数范围：1 <= posNum <= 2
+    pos  标定的点的位置，需为关节坐标系下的位置 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 示例：
+ NRC_CalibrationToolCoord_2Pos_SetPos(1, pos1);
+ NRC_CalibrationToolCoord_2Pos_SetPos(2, pos2);
+ if (NRC_CalibrationToolCoord_2Pos_Cacl() == 0)
+ {
+  //将标定结果写入工具手1
+  NRC_CalibrationToolCoord_2Pos_Save(1);
+ } |
+
+### NRC_CalibrationToolCoord_2Pos_Cacl
+
+| 函数原型 | int NRC_CalibrationToolCoord_2Pos_Cacl(); |
+| 功能描述 | 2点标定-计算标定结果。 |
+| 参数说明 | 无 |
+| 返回值 | 计算标定结果是否成功 0 计算成功 -1 计算失败 |
+| 备注说明 | 无 |
+
+### NRC_CalibrationToolCoord_2Pos_Save
+
+| 函数原型 | int NRC_CalibrationToolCoord_2Pos_Save(int tagetTool); |
+| 功能描述 | 将2点标定的结果写入到指定的工具手中。 |
+| 参数说明 | 输入参数：
+    tagetTool  要写入的工具手编号，参数范围：1 < tagetTool < 10 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_ecatSetCommand
+
+| 函数原型 | int NRC_ecatSetCommand(unsigned int axisNum, unsigned int index, unsigned int subindex, unsigned char* value, unsigned int size); |
+| 功能描述 | 设置伺服某命令字的值。 |
+| 参数说明 | 输入参数：
+    axisNum 机器人的轴编号
+    index 命令字编码
+    subindex 命令字子编码
+    value 要设置进去的值
+    size 命令字对应的值的字节数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 示例：
+ unsigned short value = 3000;
+ NRC_ecatSetCommand(1, 0x6072, 0, (signed short* )&value, sizeof(value)); |
+
+### NRC_ecatGetCommand
+
+| 函数原型 | int NRC_ecatGetCommand(unsigned int axisNum, unsigned int index, unsigned int subindex, unsigned char* value, unsigned int size); |
+| 功能描述 | 读取伺服某命令字的值。 |
+| 参数说明 | 输入参数：
+    axisNum 机器人的轴编号
+    index 命令字编码
+    subindex 命令字子编码
+    size 命令字对应的值的字节数
+输出参数：
+    value 结果存放入此指针返回 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 示例：
+unsigned short value = 0;
+NRC_ecatGetCommand(1, 0x6041, 0, (unsigned char* )&value, sizeof(value));
+printf("value=%d\n", value);
+unsigned int value = 0;
+NRC_ecatGetCommand(3, 0x202C, 0, (unsigned char* )&value, sizeof(value));
+printf("value=%d\n", value); |
+
+### NRC_ModifyControllerIP
+
+| 函数原型 | int NRC_ModifyControllerIP(const std::string &name, const std::string &ip, const std::string &gateway, const std::string &dns); |
+| 功能描述 | 修改控制器IP地址。 |
+| 参数说明 | 输入参数：
+    name  网口名称
+    ip 要修改为的目标IP，要符合IP规则
+    gateway 控制器网关
+    dns  控制器DNS |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 修改后一定要记得修改后的ip，否则无法重现连接控制器，需要返厂！ |
+
+### NRC_RestoreFactorySettings
+
+| 函数原型 | int NRC_RestoreFactorySettings(bool clearConfigFile,bool clearExtendedFile); |
+| 功能描述 | 恢复出厂设置。 |
+| 参数说明 | 输入参数：
+    clearConfigFile 系统所有配置文件
+    clearExtendedFile 所有扩展文件 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 恢复出厂设置后，控制器中的各数据将会被清除，请谨慎操作
+调用该函数后，控制器随即就会重启 |
+
+### NRC_RebootController
+
+| 函数原型 | int NRC_RebootController(); |
+| 功能描述 | 重启控制器。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 调用该函数后，控制器随即就会重启 |
+
+### NRC_GetCurrentMotorVel
+
+| 函数原型 | int NRC_GetCurrentMotorVel(double vel[]); |
+| 功能描述 | 获取电机转速。 |
+| 参数说明 | 输出参数：
+    vel 电机转速将通过数组返回，数组成员个数应不小于机器人的轴数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_GetCurrentMotorVel
+
+| 函数原型 | int NRC_Rbt_GetCurrentMotorVel(int robotNum, double vel[]); |
+| 功能描述 | 获取电机转速（多机版）。 |
+| 参数说明 | 输入参数：
+    robotNum 传入机器人编号(1-4)
+输出参数
+    vel 电机转速将通过数组返回，数组成员个数应不小于机器人的轴数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetCurrentTrackingError
+
+| 函数原型 | int NRC_GetCurrentTrackingError(double trackingError[]); |
+| 功能描述 | 获取当前超差值。 |
+| 参数说明 | 输出参数
+    trackingError 当前超差值将通过数组返回，数组成员个数应不小于机器人的轴数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetMaxTrackingError
+
+| 函数原型 | int NRC_GetMaxTrackingError(double maxTrackingError[]); |
+| 功能描述 | 获取最大超差值。 |
+| 参数说明 | 输出参数
+    maxTrackingError 最大超差值将通过数组返回，数组成员个数应不小于机器人的轴数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetRobotAxisSum
+
+| 函数原型 | int NRC_GetRobotAxisSum(); |
+| 功能描述 | 获取机器人轴数。 |
+| 参数说明 | 无 |
+| 返回值 | 机器人轴数 |
+| 备注说明 | 无 |
+
+### NRC_GetSyncAxisSum
+
+| 函数原型 | int NRC_GetSyncAxisSum(); |
+| 功能描述 | 获取外部轴轴数。 |
+| 参数说明 | 无 |
+| 返回值 | 外部轴轴数 |
+| 备注说明 | 无 |
+
+### NRC_GetCurrentTime
+
+| 函数原型 | NRC_TIME NRC_GetCurrentTime(); |
+| 功能描述 | 获取当前时间。 |
+| 参数说明 | 无 |
+| 返回值 | NRC_TIME结构体 |
+| 备注说明 | 无 |
+
+### NRC_SetMsgHappenCallback
+
+| 函数原型 | int NRC_SetMsgHappenCallback(void (*fun)(void)); |
+| 功能描述 | 设置消息发生时的回调函数。 |
+| 参数说明 | 输入参数：
+    fun 回调函数的函数指针 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 当有消息发生时，将会调用此回调函数 |
+
+### NRC_FirstMessagePop
+
+| 函数原型 | NRC_Message NRC_FirstMessagePop(); |
+| 功能描述 | 弹出队列中最早的消息。 |
+| 参数说明 | 无 |
+| 返回值 | 返回队列中最早的消息，并从队列中移除该消息 |
+| 备注说明 | 无 |
+
+### NRC_LastMessagePop
+
+| 函数原型 | NRC_Message NRC_LastMessagePop(); |
+| 功能描述 | 弹出队列中最后的消息。 |
+| 参数说明 | 无 |
+| 返回值 | 返回队列中最后的消息，并从队列中移除该消息 |
+| 备注说明 | 无 |
+
+### NRC_GetMessage
+
+| 函数原型 | int NRC_GetMessage(int num, NRC_Message& msg); |
+| 功能描述 | 获取队列中第num个消息。 |
+| 参数说明 | 输入参数：
+    num 要获取的消息在队列中的编号，最早的消息编号为1，取值范围：0 < num <= NRC_GetMessageSize()
+输出参数：
+    msg 获取的消息通过此参数返回 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 获取队列中第num个消息，不会移除该消息 |
+
+### NRC_GetMessageSize
+
+| 函数原型 | int NRC_GetMessageSize(); |
+| 功能描述 | 获取队列中消息总数。 |
+| 参数说明 | 无 |
+| 返回值 | 队列中消息总数 |
+| 备注说明 | 无 |
+
+### NRC_ClearMessage
+
+| 函数原型 | void NRC_ClearMessage(); |
+| 功能描述 | 获取当前用户坐标编号。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_ClearServoError
+
+| 函数原型 | int NRC_ClearServoError(); |
+| 功能描述 | 清除伺服错误。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 并不是所有的伺服错误都可以直接清除，有些错误是需要先排除错误情况才能清除！ |
+
+### NRC_ClearAllError
+
+| 函数原型 | int NRC_ClearAllError(); |
+| 功能描述 | 清除全部错误，清空消息的队列，同时清除伺服错误。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 并不是所有的伺服错误都可以直接清除，有些错误是需要先排除错误情况才能清除！ |
+
+### NRC_GetAngularVel
+
+| 函数原型 | int NRC_GetAngularVel(double* angular); |
+| 功能描述 | 获取关节角速度,单位 rad/s。 |
+| 参数说明 | 输出参数：
+    angular 角速度数组，最大长度为 12 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetLinerVel
+
+| 函数原型 | int NRC_GetLinerVel(double& linevel); |
+| 功能描述 | 获取关节线速度,单位 mm/s。 |
+| 参数说明 | 输出参数：
+    linevel 末端线速度 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetAxisVelSync
+
+| 函数原型 | int NRC_GetAxisVelSync(double* syncangular); |
+| 功能描述 | 获取外部运动速度。 |
+| 参数说明 | 输出参数：
+    syncangular运动速度数组，最大长度为 12 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 若外部轴为直线轴，单位为 mm/s，若为关节轴，单位为 °/s |
+
+### NRC_GetTorq
+
+| 函数原型 | int NRC_GetTorq(double* torq); |
+| 功能描述 | 获取各关节力矩,单位为千分比。 |
+| 参数说明 | 输出参数：
+    torq  以数组的形式返回各关节的力矩值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_GetTorq
+
+| 函数原型 | int NRC_Rbt_GetTorq(int robotNum, double* torq); |
+| 功能描述 | 获取各关节力矩,单位为千分比 多机版。 |
+| 参数说明 | 输入参数：
+    robotNum 机器人编号
+输出参数：
+    torq  以数组的形式返回各关节的力矩值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetSyncTorq
+
+| 函数原型 | int NRC_GetSyncTorq(double* torq); |
+| 功能描述 | 获取各外部轴关节力矩,单位为千分比。 |
+| 参数说明 | 输出参数：
+    torq  以数组的形式返回各外部轴关节的力矩值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_GetSyncTorq
+
+| 函数原型 | int NRC_Rbt_GetSyncTorq(int robotNum, double* torq); |
+| 功能描述 | 获取各外部轴关节力矩,单位为千分比 多机版。 |
+| 参数说明 | 输入参数：
+    robotNum 机器人编号
+输出参数：
+    torq  以数组的形式返回各外部轴关节的力矩值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetRatedTorque
+
+| 函数原型 | int NRC_GetRatedTorque(double* ratedTorq); |
+| 功能描述 | 获取各关节额定力矩。 |
+| 参数说明 | 输入参数：
+    syncangular运动速度数组，最大长度为 12 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_GetRatedTorque
+
+| 函数原型 | int NRC_Rbt_GetRatedTorque(int robotNum, double* ratedTorq); |
+| 功能描述 | 获取各关节额定力矩 多机版。 |
+| 参数说明 | 输入参数：
+    ratedTorq以数组的形式返回各关节的额定力矩值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetSyncJointNum
+
+| 函数原型 | int NRC_SetSyncJointNum(int syncGroupNum, std::vector<int> syncGroupType); |
+| 功能描述 | 设置机器人外部轴数目。 |
+| 参数说明 | 输入参数：
+    syncGroupNum 要设置的外部轴轴组数，参数范围：0 <= syncGroupNum <= 3
+    syncGroupType 要设置的外部轴各轴组类型，1:单轴变位机,2:双轴变位机,3: |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数。
+修改后重启才能生效！！！ |
+
+### NRC_Rbt_GetSyncJointType
+
+| 函数原型 | int NRC_Rbt_GetSyncJointType(int robot, std::vector<int>& sync_group_type); |
+| 功能描述 | 获取机器人外部轴组类型。 |
+| 参数说明 | 输入参数：
+    robot 机器人号， 0< robot <= 4
+输出参数：
+    sync_group_type 获取到的数据按照外部轴连接顺序存入sync_group_type容器 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 外部轴各轴组类型，1:单轴变位机,2:双轴变位机,3:地轨 |
+
+### NRC_GetSyncRackConversionRatio
+
+| 函数原型 | int NRC_GetSyncRackConversionRatio(double & xDirection,double & yDirection,double & zDirection); |
+| 功能描述 | 获取外部轴地轨转换比。 |
+| 参数说明 | 输出参数：
+    xDirection   X方向
+    yDirection   Y方向
+    zDirection   Z方向 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetSyncRackConversionRatio
+
+| 函数原型 | Int NRC_SetSyncRackConversionRatio(double xDirection,double yDirection,double zDirection); |
+| 功能描述 | 设置外部轴地轨转换比。 |
+| 参数说明 | 输入参数：
+    xDirection   X方向
+    yDirection   Y方向
+    zDirection   Z方向 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetSyncCooperation
+
+| 函数原型 | int NRC_SetSyncCooperation(bool coopertion); |
+| 功能描述 | 设置外部轴地轨是否协作。 |
+| 参数说明 | 输入参数：
+    coopertion：是否协作 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetSyncCooperation
+
+| 函数原型 | int NRC_GetSyncCooperation(int syncGroupNum); |
+| 功能描述 | 获取外部轴地轨是否协作。 |
+| 参数说明 | 输入参数：
+    syncGroupNum：轴组的序号，参数范围：1 <= syncGroupNum <= 3 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_CalSyncCalibrationResult
+
+| 函数原型 | int NRC_CalSyncCalibrationResult(int syncGroupNum); |
+| 功能描述 | 计算外部轴标定结果。 |
+| 参数说明 | 输入参数：
+    syncGroupNum 轴组的序号，参数范围：1 <= syncGroupNum <= 3 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetSyncGroupNum
+
+| 函数原型 | int NRC_GetSyncGroupNum(); |
+| 功能描述 | 获取当前外部轴组号。 |
+| 参数说明 | 无 |
+| 返回值 | 外部轴组号 |
+| 备注说明 | 无 |
+
+### NRC_SetSyncGroupNum
+
+| 函数原型 | int NRC_SetSyncGroupNum(int syncGroupNum); |
+| 功能描述 | 设置机器人外部轴组号。 |
+| 参数说明 | 输入参数：
+    syncGroupNum 要设置的轴组的序号，参数范围：1 <= syncGroupNum <= 3 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetSyncGroupCarbinarion
+
+| 函数原型 | int NRC_GetSyncGroupCarbinarion(int syncGroupNum); |
+| 功能描述 | 查询某组外部轴是否标定。 |
+| 参数说明 | 输入参数：
+    syncGroupNum 要查询的轴组的序号，参数范围：1 <= syncGroupNum <= 3 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetSyncGroupCarbinarion
+
+| 函数原型 | int NRC_SetSyncGroupCarbinarion(int syncGroupNum,int pointNum); |
+| 功能描述 | 标定外部轴点位(组号，点位编号)。 |
+| 参数说明 | 输入参数：
+    syncGroupNum 要设置的轴组的序号，参数范围：1 <= syncGroupNum <= 3
+    pointNum 要设置的点位编号，0 <= pointNum <= 4 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetSyncJointPara
+
+| 函数原型 | int NRC_SetSyncJointPara(int syncGroupNum, int syncAxisNum, NRC_RobotJointConfig config); |
+| 功能描述 | 设置机器人外部轴参数。 |
+| 参数说明 | 输入参数：
+    syncGroupNum 要设置的轴组的序号，参数范围：1 <= syncGroupNum <= 3
+    syncAxisNum 要设置的某轴组中轴的序号，参数范围：1 <= syncAxisNum <= 2
+    config  see NRC_RobotJointConfig |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_GetSyncJointPara
+
+| 函数原型 | int NRC_GetSyncJointPara(int syncGroupNum, int syncAxisNum, NRC_RobotJointConfig& config); |
+| 功能描述 | 获取机器人外部轴参数。 |
+| 参数说明 | 输入参数：
+    syncGroupNum 要设置的轴组的序号，参数范围：1 <= syncGroupNum <= 3
+    syncAxisNum 要设置的某轴组中轴的序号，参数范围：1 <= syncAxisNum <= 2
+输出参数：
+    config  see NRC_RobotJointConfig |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetSyncJogJointSpeedConfig
+
+| 函数原型 | int NRC_SetSyncJogJointSpeedConfig(int groupNum, int axisNum, double maxSpeed, double acc); |
+| 功能描述 | 设置机器人外部轴点动关节速度。 |
+| 参数说明 | 输入参数：
+    groupNum 要设置的轴组序号，参数范围：1 <= groupNum <= 外部轴轴组总数
+    axisNum 要设置的轴在轴组中的序号，参数范围：1 <= axisNum <= 轴组组总数
+    maxSpeed 点动时，该轴可以达到的最大速度，单位：度/秒
+    acc 点动时，该轴的加速度，单位：度/平方秒 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数 |
+
+### NRC_GetSyncJogJointSpeedConfig
+
+| 函数原型 | int NRC_GetSyncJogJointSpeedConfig(int groupNum, int axisNum, double& maxSpeed, double& acc); |
+| 功能描述 | 获取机器人外部轴点动关节速度。 |
+| 参数说明 | 输入参数：
+    groupNum 要设置的轴组序号，参数范围：1 <= groupNum <= 外部轴轴组总数
+    axisNum 要设置的轴在轴组中的序号，参数范围：1 <= axisNum <= 轴组组总数
+输出参数：
+    maxSpeed 点动时，该轴可以达到的最大速度，单位：度/秒
+    acc 点动时，该轴的加速度，单位：度/平方秒 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetCurrentSyncPosToZeroPos
+
+| 函数原型 | int NRC_SetCurrentSyncPosToZeroPos(int axisNum,bool mod); |
+| 功能描述 | 将外部轴当前位置设置为零点或清除多圈值。 |
+| 参数说明 | 输入参数：
+    axisNum 操作的轴的序号，当axisNum为0时，表示全部外部轴，参数范围：0 <= axisNum <= 外部轴轴总数
+    mod为设置零点或清除多圈值，0为设置零点，1为清除多圈值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 请在伺服停止或伺服就绪状态下设置该参数。
+执行该函数大约需要两三秒时间。
+对于大多数类型的伺服，执行该函数时，会使伺服使能上电，请注意安全。 |
+
+### NRC_RobotMoveJointSync
+
+| 函数原型 | int NRC_RobotMoveJointSync(int vel,NRC_Position target, const NRC_SyncPosition& targetSync,  int acc, int dec); |
+| 功能描述 | 机器人外部轴点到点运动，机器人外部轴以 vel 的速度从当前位置以点到点方式运行到 synctarget 位置。 |
+| 参数说明 | 输入参数：
+    vel 机器人外部轴的运行速度，为机器人外部轴最大速度的百分比，参数范围：0 < vel <= 100
+    target 机器人本体运动目标位置，详见 NRC_Position
+    targetSync 机器人外部轴运动目标位置，详见 NRC_SyncPosition
+    acc 机器人外部轴运行加速度，为机器人外部轴各关节最大加速度的百分比，参数范围：0 < vel <= 100
+    dec 机器人外部轴运行减速度，为机器人外部轴各关节最大减速度的百分比，参数范围：0 < vel <= 100 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 调用该函数前，请将伺服上电使能，可调用 NRC_ServoEnable() 函数将伺服上电。成功调用该函数后，机器人外部轴将开始运动，请注意安全。 |
+
+### NRC_RobotMoveLineSync
+
+| 函数原型 | int NRC_RobotMoveLineSync(int vel,NRC_Position target, const NRC_SyncPosition& targetSync,  int acc, int dec); |
+| 功能描述 | 机器人外部轴直线运动，机器人本体以 vel 的速度从当前位置以直线方式运行到 target 位置，机器人外部轴以 vel 的速度从当前位置以点到点方式运行到 synctarget 位置。 |
+| 参数说明 | 输入参数：
+    vel 机器人的运行速度，为机器人最大速度的百分比，参数范围：0 < vel <= 100
+    acc 机器人运行加速度，为机器人各关节最大加速度的百分比，参数范围：0 < vel <= 100
+    dec 机器人运行减速度，为机器人各关节最大减速度的百分比，参数范围：0 < vel <= 100
+    target 机器人运动目标位置，详见 NRC_Position
+    targetSync 外部轴运动目标位置，详见 NRC_SyncPosition |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 调用该函数前，请将伺服上电使能，可调用 NRC_ServoEnable() 函数将伺服上电。成功调用该函数后，机器人外部轴将开始运动，请注意安全。 |
+
+### NRC_GetCurrentSyncPos
+
+| 函数原型 | int NRC_GetCurrentSyncPos(NRC_SyncPosition& position); |
+| 功能描述 | 获取外部轴当前位置，该函数可以获取外部轴位置，位置数据由参数引用 position 返回。 |
+| 参数说明 | 输出参数：
+    NRC_SyncPosition 外部轴当前位置 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_GetCurrentSyncPos
+
+| 函数原型 | int NRC_Rbt_GetCurrentSyncPos(int robotNum, NRC_SyncPosition& position); |
+| 功能描述 | 获取外部轴当前位置(多机版)，该函数可以获取在 coord 坐标系下外部轴位置，位置数据由参数引用 position 返回。 |
+| 参数说明 | 输入参数：
+    robotNum 机器人编号(1-4)
+输出参数：
+    NRC_SyncPosition 外部轴当前位置 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_PosReachable
+
+| 函数原型 | int NRC_PosReachable(NRC_Position target,NRC_SyncPosition syncTarget,bool &result); |
+| 功能描述 | 该函数可以判断本体点位target和外部轴点位syncTarget是否超限，结果由result返回，result值为true表示可以到达，值为false表示不可到达。 |
+| 参数说明 | 输入参数：
+    target  see NRC_Position
+    syncTarget  see NRC_SyncPosition
+输出参数：
+    result  true表示可以到达，值为false表示不可到达 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetIdentityParam
+
+| 函数原型 | int NRC_SetIdentityParam(int size,int vel,double& zMax,double& zMin); |
+| 功能描述 | 该函数用于设置动力学辨识所需的两个参数并返回当前轨迹范围下机器人末端在Z坐标轴上的最大值和最小值。 |
+| 参数说明 | 输入参数：
+    size,控制辨识轨迹的范围
+    vel,控制辨识轨迹的速度
+输出参数：
+    zMax末端运行到的Z的最大值
+    zMin末端运行到的Z的最小值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 动力学辨识过程中机器人会大幅度运动，因此要确保机器人的运动范围内空旷，无障碍物。执行动力学辨识功能前请认真阅读以下注意事项：
+ * 1.目前动力学辨识功能只适用于六轴机器人空载状态下对本体进行辨识。
+ * 2.该辨识方法所得动力学参数与手填动力学参数无关。
+ * 3.执行辨识程序前确保机器人的运动范围内空旷，无障碍物。
+ * 4.辨识轨迹的范围由参数size控制，100时为最大范围；辨识轨迹的速度由参数vel控制，100时为最大速度，此时辨识轨迹运行时间为10秒。
+ * 5.辨识轨迹的参数的设置规则：首先设定一个较小的vel值(建议20)，并设置一个较小的size值(建议20)，并执行安全检测程序(NRC_RunSafeCheckProgram)，
+ * 在安全的基础上逐步增大size的值，直至达到最大的安全运行范围(此时size值可能未达到100，取决于机器人的运行环境)。
+ * 在得到环境所允许的最大size值后，把vel值设置为100，执行辨识程序(NRC_RunIdentifyProgram)。
+ * 6.执行辨识时vel值必须是100，而size值没有固定值(理论上size越接近100辨识精度越高)。 |
+
+### NRC_RunSafeCheckProgram
+
+| 函数原型 | int NRC_RunSafeCheckProgram(); |
+| 功能描述 | 运行范围安全检测程序，该函数功能是运行一次动力学辨识的轨迹，以便确认周围环境是否安全，即确保机器人进行辨识时不会碰到周围的人或物。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_RunIdentifyProgram
+
+| 函数原型 | int NRC_RunIdentifyProgram(); |
+| 功能描述 | 执行动力学辨识程序，该函数的功能是进行动力学辨识，沿预定轨迹运行十次，每次运行完成后会对获取到的数据进行计算并返回理论力矩与实际力矩的误差值。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetIdentifyError
+
+| 函数原型 | int NRC_GetIdentifyError(double* error); |
+| 功能描述 | 获取十次辨识力矩误差值，该函数的功能是获取十次辨识计算的理论力矩与实际力矩的误差值。 |
+| 参数说明 | 输出参数：
+    error 返回理论力矩与实际力矩的误差值，数组长度为60，每6个数据为一次运行轨迹所得到的误差值，共有十次轨迹的误差值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_StopIdentityProgram
+
+| 函数原型 | int NRC_StopIdentityProgram(); |
+| 功能描述 | 停止动力学辨识程序。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetCollisionParam
+
+| 函数原型 | int NRC_SetCollisionParam(double* param); |
+| 功能描述 | 该函数的功能是设置各关节判定发生碰撞时理论力矩与实际力矩的差值的绝对值，该值越大则判断碰撞发生的灵敏度越低。 |
+| 参数说明 | 输入参数：
+    param是六位数组，从首元素到尾元素依次表示一到六关节的阈值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetCollisionSwitch
+
+| 函数原型 | int NRC_SetCollisionSwitch(bool param); |
+| 功能描述 | 该函数的功能是打开或关闭碰撞检测功能。 |
+| 参数说明 | 输入参数：
+    param true为打开碰撞检测功能，false为关闭碰撞检测功能 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetCollisionSwitch
+
+| 函数原型 | int NRC_GetCollisionSwitch(double* syncangular); |
+| 功能描述 | 该函数的功能是查看碰撞检测功能是否打开。 |
+| 参数说明 | 输出参数：
+    param true为碰撞检测功能打开，false为碰撞检测功能关闭 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_CalcConfiguration
+
+| 函数原型 | int NRC_CalcConfiguration(double* acsPos,int& conf); |
+| 功能描述 | 该函数的功能是计算机器人各关节在acsPos下的形态,仅对R_GENERAL_6S类型机器人有效,其余机器人类型下conf值为0。 |
+| 参数说明 | 输入参数：
+    acsPos 六维数组，用于传入机器人各关节位置
+输出参数：
+    conf 传出机器人形态值的计算结果,0表示机器人类型不是R_GENERAL_6S,1-8对应机器人的8个形态值 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetSocketCustomProtocalCB
+
+| 函数原型 | int NRC_SetSocketCustomProtocalCB(int commandNum,void (*fun)(std::string)); |
+| 功能描述 | 该函数的功能是自定义socket通讯协议。 |
+| 参数说明 | 输入参数：
+    commandNum 通讯编号,范围 0x9200 - 0x920e
+    (*fun)(string) 函数句柄，即commandNum指令要调用的函数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SendSocketCustomProtocal
+
+| 函数原型 | int NRC_SendSocketCustomProtocal(int commandNum,std::string str); |
+| 功能描述 | 发送socket通信。 |
+| 参数说明 | 输入参数：
+    commandNum 通讯编号,范围 0x9200 - 0x920e
+    str 发送的内容 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetTeachBoxConnectStatus
+
+| 函数原型 | bool NRC_GetTeachBoxConnectStatus(); |
+| 功能描述 | 获取是否连接了示教盒。 |
+| 参数说明 | 无 |
+| 返回值 | 是否连接了示教盒 |
+| 备注说明 | 无 |
+
+### NRC_SetJobFileCustomInstructionCB
+
+| 函数原型 | int NRC_SetJobFileCustomInstructionCB(bool (*fun)(int,const std::string &,const std::string &)); |
+| 功能描述 | 该函数的功能是将一个函数绑定到自定义指令中。 |
+| 参数说明 | 输入参数：
+    (*fun)(int,std::string,std::string) 函数指针，即自定义指令要调用的函数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 回调函数指针中的参数分别为该自定义指令的编号，该自定义指令的字符串参数，该自定义指令调用的点位名称（未调用则此参数为空） |
+
+### NRC_SetJobFileCustomInstructionPreTreatmentCB
+
+| 函数原型 | int NRC_SetJobFileCustomInstructionPreTreatmentCB(void (*fun)(int,const std::string &,const std::string &)); |
+| 功能描述 | 该函数的功能是将一个函数绑定到自定义指令的预处理函数中。 |
+| 参数说明 | 输入参数：
+    (*fun)(int,std::string,std::string) 函数指针，即自定义指令要调用的预处理函数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 回调函数指针中的参数分别为该自定义指令的编号，该自定义指令的字符串参数，该自定义指令调用的点位名称（未调用则此参数为空） |
+
+### NRC_SetJobFileCustomInstructionPostTreatmentCB
+
+| 函数原型 | int NRC_SetJobFileCustomInstructionPostTreatmentCB(void (*fun)(int,const std::string &,const std::string &)); |
+| 功能描述 | 该函数的功能是将一个函数绑定到自定义指令的后处理函数中。 |
+| 参数说明 | 输入参数：
+    (*fun)(int,std::string,std::string) 函数指针，即自定义指令要调用的后处理函数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 回调函数指针中的参数分别为该自定义指令的编号，该自定义指令的字符串参数，该自定义指令调用的点位名称（未调用则此参数为空） |
+
+### NRC_ParseJobfileToAppendRunInstruction
+
+| 函数原型 | int NRC_ParseJobfileToAppendRunInstruction(const std::string &fileName, std::vector<NRC_InstrDataBase*>& instrVec); |
+| 功能描述 | 该函数的功能是把作业文件中的所有指令解析成可以作为追加模式指令的队列。 |
+| 参数说明 | 输入参数：
+    fileName 要解析的作业文件名
+输出参数：
+    instrVec 解析完成后得到的追加模式指令队列 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_TriggerErrorReport
+
+| 函数原型 | int NRC_TriggerErrorReport(int kind,const std::string &text); |
+| 功能描述 | 用户主动触发报错。 |
+| 参数说明 | 输入参数：
+    kind <消息级别：0:一般消息，1:警告消息，2:错误消息，3:重要消息
+    text 报错内容 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetOpenJobFileName
+
+| 函数原型 | int NRC_GetOpenJobFileName(std::string& name); |
+| 功能描述 | 该函数的功能是获取当前打开的作业文件的名称。 |
+| 参数说明 | 输出参数：
+    name 返回当前打开的作业文件的名称 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SendCursorJumpCmdToTeachbox
+
+| 函数原型 | int NRC_SendCursorJumpCmdToTeachbox(const std::string& name, int line); |
+| 功能描述 | 调用该接口,将向示教器发送光标跳行命令,示教器响应后,会将光标跳转到指定作业文件的指定行。 |
+| 参数说明 | 输入参数：
+    line 跳转到指定作业文件的指定行
+输出参数：
+    name 返回当前打开的作业文件的名称 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SingleSyncAxisMoveJConstVel_For_CustomInstructionCB
+
+| 函数原型 | int NRC_SingleSyncAxisMoveJConstVel_For_CustomInstructionCB(int syncAxis,double vel); |
+| 功能描述 | 调用该接口,在运行模式下，外部轴syncAxis将会以恒定的vel运动,同时调用多个该函数只有第一个该函数有效。 |
+| 参数说明 | 输入参数：
+    syncAxis 要运动的外部轴号,从1开始,比如需要外部轴1运动，则syncAxis传入1
+    vel 运动的速度，单位度每秒 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_StopSingleSyncAxisMoveJConstVel_For_CustomInstructionCB
+
+| 函数原型 | int NRC_StopSingleSyncAxisMoveJConstVel_For_CustomInstructionCB(); |
+| 功能描述 | 调用该接口,将停止外部轴恒速运动,该接口必须在有外部轴恒速运动状态下调用，否则返回-1。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetSingleSyncAxisMoveJConstVelMoving
+
+| 函数原型 | int NRC_GetSingleSyncAxisMoveJConstVelMoving(bool& moving); |
+| 功能描述 | 调用该接口获取单个外部轴恒速运动标志位。 |
+| 参数说明 | 输出参数：
+    moving true表示NRC_SingleSyncAxisMoveJConstVel_For_CustomInstructionCB正在生效,false表示NRC_SingleSyncAxisMoveJConstVel_For_CustomInstructionCB未生效 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_ResetSyncAxisMultipleTurns
+
+| 函数原型 | int NRC_ResetSyncAxisMultipleTurns(int syncAxis); |
+| 功能描述 | 调用该接口，把外部轴当前位置重置到-360°~360°内,效果同示教器界面中的复位外部轴多圈转动量指令,该接口仅能重置单个外部轴。 |
+| 参数说明 | 输入参数：
+    要重置的外部轴号,从1开始,比如需要重置外部轴1，则syncAxis传入1 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetFaultResetCB
+
+| 函数原型 | int NRC_SetFaultResetCB(void (*fun)()); |
+| 功能描述 | 该函数的功能是设置清错按键回调函数,不影响控制器本身的清错功能。 |
+| 参数说明 | 输入参数：
+    void (*fun)()  注册一个函数，在示教器按下清错按键时调用改注册的函数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetRunModeAutoManBegFlag
+
+| 函数原型 | int NRC_SetRunModeAutoManBegFlag(bool flag); |
+| 功能描述 | 设置切到运行模式自动上电。 |
+| 参数说明 | 输入参数：
+    flag  0-切到运行模式不会自动上电  1-切到运行模式自动上电 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetServoModerOfOperation
+
+| 函数原型 | int NRC_SetServoModerOfOperation(unsigned char moderValue); |
+| 功能描述 | 设置伺服运行模式。 |
+| 参数说明 | 输入参数：
+    moderValue 伺服运行模式：3:速度模式PV,８:周期位置模式CSP, 9:周期同步速度模式(CSV), 10:周期同步转矩模式(CST) |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_SetServoModerOfOperation
+
+| 函数原型 | int NRC_Rbt_SetServoModerOfOperation(int rotbotNum, unsigned char moderValue); |
+| 功能描述 | 设置伺服运行模式,多机版。 |
+| 参数说明 | 输入参数：
+    rotbotNum 机器人编号(1-4)
+    moderValue 伺服运行模式：3:速度模式PV, ８:周期位置模式CSP,  9:周期同步速度模式(CSV),  10:周期同步转矩模式(CST) |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_PV_SetTargetVelocity
+
+| 函数原型 | int NRC_PV_SetTargetVelocity(int robotNum, unsigned int axisNum, double vel); |
+| 功能描述 | 调用该接口,将设置PV模式下运行速度。 |
+| 参数说明 | 输入参数：
+    robotNum  机器人编号(1-4)
+    axisNum   轴号,1为起始轴数
+    vel   设置速度值　单位r/min |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 仅在PV模式下有用 |
+
+### NRC_PV_SetTargetAccAndDec
+
+| 函数原型 | int NRC_PV_SetTargetAccAndDec(int robotNum, unsigned int axisNum, double acc, double dec); |
+| 功能描述 | 调用该接口,将设置PV模式下运行加速度，减速度。 |
+| 参数说明 | 输入参数：
+    robotNum  机器人编号(1-4)
+    axisNum   轴号,1为起始轴数
+    acc  加速度值　单位r/min
+    dec  减速度值　单位r/min |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 仅在PV模式下有用 |
+
+### NRC_GetIOConfig
+
+| 函数原型 | int NRC_GetIOConfig(int ioNum, int ioType); |
+| 功能描述 | 调用该接口,可以返回特定IO板对应的IO端口数量。 |
+| 参数说明 | 输入参数：
+    ioNum  IO板编号, 欲查询连接的IO板，就传入对应IO板编号，范围[1-4]
+    ioType  IO端口类型 DIN = 0, DOUT = 1, AIN = 2, AOUT = 3 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 示例：目前共连接3块IO板，查询该IO版DIN端口数：​
+​ NRC_GetIOConfig(3，0); // 范围不能超过3 |
+
+### NRC_GetIOBoardSum
+
+| 函数原型 | int NRC_GetIOBoardSum(); |
+| 功能描述 | 调用该接口,可以返回IO板数量。 |
+| 参数说明 | 输入参数：
+    syncangular运动速度数组，最大长度为 12 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetTargetPosition
+
+| 函数原型 | int NRC_SetTargetPosition(double* targetPosition); |
+| 功能描述 | 调用该接口,将设置机器人目标位置。 |
+| 参数说明 | 输入参数：
+    targetPosition 传入各关节的角度位置的数组 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetTargetTorque
+
+| 函数原型 | int NRC_SetTargetTorque(signed short* targetTorq); |
+| 功能描述 | 设置机器人目标力矩。 |
+| 参数说明 | 输入参数：
+    targetTorq  传入各关节的目标力矩的数组 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetMaxTorque
+
+| 函数原型 | int NRC_SetMaxTorque(int axis, signed short torque); |
+| 功能描述 | 设置机器人轴最大力矩。 |
+| 参数说明 | 输入参数：
+    axis  轴号
+    torque  轴最大力矩 参考:3000 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetMaxTorque
+
+| 函数原型 | int NRC_GetMaxTorque(int axis, signed short& torque); |
+| 功能描述 | 获取机器人轴最大力矩。 |
+| 参数说明 | 输入参数：
+    axis  轴号
+输出参数：
+    torque  轴最大力矩存储变量 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_SetMaxTorque
+
+| 函数原型 | int NRC_Rbt_SetMaxTorque(int robotNum, int axis, signed short torque); |
+| 功能描述 | 获取机器人轴最大力矩，多机版。 |
+| 参数说明 | 输入参数：
+    robotNum 传入机器人编号(1-4)
+    axis  轴号
+输出参数：
+    torque  轴最大力矩存储变量 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetActualTorque
+
+| 函数原型 | int NRC_GetActualTorque(int robotNum, int axis, signed short& torque); |
+| 功能描述 | 获取机器人轴实际力矩。 |
+| 参数说明 | 输入参数：
+    robotNum  传入机器人编号(1-4)
+    axis  轴号
+输出参数：
+    torque  轴实际力矩存储变量 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetActualCurrent
+
+| 函数原型 | int NRC_GetActualCurrent(int robotNum, int axis, signed short& current); |
+| 功能描述 | 获取实际电流。 |
+| 参数说明 | 输入参数：
+    robotNum  传入机器人编号(1-4)
+    axis  轴号
+输出参数：
+    current 电流存储变量 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetMaxCurrent
+
+| 函数原型 | int NRC_GetMaxCurrent(int robotNum, int axis, signed short& current); |
+| 功能描述 | 获取最大电流。 |
+| 参数说明 | 输入参数：
+    robotNum  传入机器人编号(1-4)
+    axis  轴号
+输出参数：
+    current 最大电流存储变量 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetOverTolerance
+
+| 函数原型 | int NRC_SetOverTolerance(int axis, unsigned int tolerance); |
+| 功能描述 | 设置机器人轴超差。 |
+| 参数说明 | 输入参数：
+    axis  轴号
+    tolerance  机器人轴最大超差 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_SetOverTolerance
+
+| 函数原型 | int NRC_Rbt_SetOverTolerance(int robotNum, int axis, unsigned int tolerance); |
+| 功能描述 | 设置机器人轴超差，多机版。 |
+| 参数说明 | 输入参数：
+    robotNum 传入机器人编号(1-4)
+    axis  轴号
+    tolerance  机器人轴最大超差 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetTolerance
+
+| 函数原型 | int NRC_GetTolerance(int axis, unsigned int& tolerance); |
+| 功能描述 | 获取机器人轴超差。 |
+| 参数说明 | 输入参数：
+    axis  轴号
+输出参数：
+    tolerance  轴超差存储变量 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_Rbt_GetTolerance
+
+| 函数原型 | int NRC_Rbt_GetTolerance(int robotNum, int axis, unsigned int& tolerance); |
+| 功能描述 | 获取机器人轴超差，多机版。 |
+| 参数说明 | 输入参数：
+    robotNum 传入机器人编号(1-4)
+    axis  轴号
+输出参数：
+    tolerance  轴超差存储变量 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_ShieldFollowError
+
+| 函数原型 | int NRC_ShieldFollowError(int axis, bool shield); |
+| 功能描述 | 屏蔽机器人轴跟随误差。 |
+| 参数说明 | 输入参数：
+    axis  轴号
+    shield  屏蔽 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_robotRunCycle_Callback
+
+| 函数原型 | int NRC_robotRunCycle_Callback(void (*fun)()); |
+| 功能描述 | 设置一个自定义的无参函数，调用该接口,将每个EtherCat通讯周期(默认1ms)回调一次。 |
+| 参数说明 | 输入参数：
+    void (*fun)()  注册一个无返回值无参的函数，每个EtherCat通讯周期调用一次该函数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 回调函数中不得含有任何耗时操作 |
+
+### NRC_GetServoMode
+
+| 函数原型 | int NRC_GetServoMode(int *servoMode); |
+| 功能描述 | 获取伺服运行模式。 |
+| 参数说明 | 输出参数：
+    servoMode 以数组形式返回每个伺服运行模式： |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | servoMode ：以数组形式返回每个伺服运行模式：
+* 0-模式不变；
+*1-规划位置模式（PP）；
+*2-速度模式（VL）；
+*3-规划速度模式（PV）；
+*4-规划转矩模式（PT）；
+*5-保留；
+*6-寻原点模式（HM）；
+*7-插补位置模式（IP），暂不支持；
+*8-周期同步位置模式（CSP）；
+*9-周期同步速度模式（CSV）；
+                             *10-周期同步转矩模式（CST）。 |
+
+### NRC_SetTargetVelocity
+
+| 函数原型 | int NRC_SetTargetVelocity(int *axisVel); |
+| 功能描述 | 设置目标速度值。 |
+| 参数说明 | 输入参数：
+    axisVel  传入一个double数组设置速度值(注:数组的大小需要和当前机器人轴数一致) |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetJogMoveCalculateNum
+
+| 函数原型 | int NRC_SetJogMoveCalculateNum(int num); |
+| 功能描述 | 设置点动插补点位个数。 |
+| 参数说明 | 输入参数：
+    num  点位个数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetPlanningPosition
+
+| 函数原型 | int NRC_GetPlanningPosition(int axisSum, double *axisPosition); |
+| 功能描述 | 获取规划队列的第一个点位。 |
+| 参数说明 | 输入参数：
+    axisSum  机器人总轴数
+输出参数：
+    axisPosition  返回获取点位的结果,数组纬度是axisSum |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetRobotSum
+
+| 函数原型 | int NRC_GetRobotSum(int &robotSum); |
+| 功能描述 | 获取机器人数量。 |
+| 参数说明 | 输出参数：
+    robotSum 传入一个int变量,以引用的方式返回当前的机器人数量; |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_ShieldedTeachingPendant
+
+| 函数原型 | int NRC_ShieldedTeachingPendant(bool status); |
+| 功能描述 | 调用该接口,将屏蔽示教器连接状态检测(需要在系统启动函数前调用)。 |
+| 参数说明 | 输入参数：
+    status 传入的状态 true:屏蔽和示教器的通讯　false:打开和示教器的通讯 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetControlCycle
+
+| 函数原型 | int NRC_GetControlCycle(); |
+| 功能描述 | 获取控制器与伺服的通讯周期。 |
+| 参数说明 | 无 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_EncoderZeroOffsetSync
+
+| 函数原型 | int NRC_EncoderZeroOffsetSync(int updateAxis,double offset); |
+| 功能描述 | 设置外部轴零点偏移。 |
+| 参数说明 | 输入参数：
+    updateAxis  需要偏移的外部轴号，范围[1,5]
+    offset  偏移量 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetEncoderPosition
+
+| 函数原型 | int NRC_GetEncoderPosition(int slaveNum); |
+| 功能描述 | 获取编码器点位 。 |
+| 参数说明 | 输入参数：
+    slaveNum  轴号 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetCustomFileTransfer
+
+| 函数原型 | void NRC_SetCustomFileTransfer(const NRC_FileParam & fileParamVector); |
+| 功能描述 | 设置可导入导出的自定义配置文件。 |
+| 参数说明 | 输入参数：
+    fileParamVector 配置文件参数 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | fileParamVector 示例："global.json","config/global.json","1.0.0" |
+
+### NRC_SetRobotMode
+
+| 函数原型 | int NRC_SetRobotMode(int mode); |
+| 功能描述 | 设置机器人为多机模式。 |
+| 参数说明 | 输入参数：
+    mode 0-单机模式  1-多机模式 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_TcpCalculate
+
+| 函数原型 | int NRC_TcpCalculate(int robotNum, NRC_Position pos, const NRC_Position& deviation, NRC_COORD coord, NRC_Position& resultPos); |
+| 功能描述 | 计算特定坐标系下，点位进行固定距离偏移后的位置。 |
+| 参数说明 | 输入参数：
+    robotNum  机器人编号1-4
+    pos  要进行偏移的点
+    coord  坐标系
+输出参数：
+    deviation  偏移距离
+    resultPos 计算结果存储点位 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetStatusWord
+
+| 函数原型 | int NRC_GetStatusWord(int robotNum, int axis, signed short& value); |
+| 功能描述 | 读取伺服状态字。 |
+| 参数说明 | 输入参数：
+    robotNum  传入机器人编号(1-4)
+    axis  轴号
+输出参数：
+    value  状态值存储变量 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetCommunicationParam
+
+| 函数原型 | int NRC_SetCommunicationParam( const std::string& ip, int port, int robot, int craft, int type, int numberSystem, const std::string& frameHeader, const std::string& separator, const std::string& terminator); |
+| 功能描述 | 调用该接口用于设置外部TCP通信的相关参数。 |
+| 参数说明 | 输入参数：
+    ip  IP地址，指定外部通信的目标IP
+    port  端口号，指定外部通信的目标端口
+    robot  机器人编号1-4
+    craft  工艺编号  1-9
+    type  0服务端  1客户端
+    numberSystem  0 十进制 1十六进制
+    frameHeader  帧头，用于标识通信数据的开始
+    separator  分隔符，用于分隔通信数据中的不同部分
+    terminator 终止符，用于标识通信数据的结束 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetCommunicationStatus
+
+| 函数原型 | int NRC_SetCommunicationStatus(bool status, int craft, int robot); |
+| 功能描述 | 设置TCP通信的开关。 |
+| 参数说明 | 输入参数：
+    status  true开启  false关闭
+    craft 工艺编号  1-9
+    robot  机器人编号1-4 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_SetTcpMessageCallback
+
+| 函数原型 | int NRC_SetTcpMessageCallback(void (*callback)(const std::string& message)); |
+| 功能描述 | 设置外部TCP通信收到消息的回调函数。 |
+| 参数说明 | 输入参数：
+    callback 回调函数指针
+    message接收到的数据 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_CommSendMessage
+
+| 函数原型 | int NRC_CommSendMessage(const std::string& message, int craft, int robot); |
+| 功能描述 | 调用该接口,将向控制器发送消息。 |
+| 参数说明 | 输入参数：
+    message  发送的数据
+    craft 工艺编号  1-9
+    robot 机器人编号1-4 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetModbusSlaveConnectStatus
+
+| 函数原型 | int NRC_GetModbusSlaveConnectStatus(bool& status); |
+| 功能描述 | 获取modbus从站连接状态。 |
+| 参数说明 | 输出参数：
+    status  获取到的连接状态 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
+
+### NRC_GetModbusMasterConnectStatus
+
+| 函数原型 | int NRC_GetModbusMasterConnectStatus(int craft, bool& status); |
+| 功能描述 | 获取modbus主站连接状态。 |
+| 参数说明 | 输入参数：
+    craft  工艺编号
+输出参数：
+    status  获取到的连接状态 |
+| 返回值 | 0：函数调用成功返回
+-101：无效的输入参数返回
+-102：目标对象不存在，一般出现在系统初始化未完成时，调用其他函数时可能返回该值返回
+-103：目标对象当前处于不可操作状态返回 |
+| 备注说明 | 无 |
