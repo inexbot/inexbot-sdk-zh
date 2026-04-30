@@ -4,7 +4,7 @@
 
 ##### 1.首先需要确定g++版本，目前，对于qt5来说，需要安装g++和gcc4.8版本，可通过以下命令查看当前版本：
 
-```
+```bash
 g++ --version
 gcc --version
 ```
@@ -18,7 +18,7 @@ gcc --version
 
 ### 3.创建ROS 创建工作空间​
 
-```
+```bash
 source /opt/ros/noetic/setup.bash
 mkdir -p ~/inexbot/src
 cd ~/inexbot/src
@@ -39,7 +39,7 @@ catkin_create_pkg Qt_test roscpp std_msgs
 
 ##### 这是最关键的一步。需要修改功能包下的 CMakeLists.txt 文件，使其能够编译 Qt 项目。ROS 使用 CMake，而 Qt 通常使用 qmake，但我们可以通过 CMake 的 find_package 来定位 Qt。以上面的工程为例子，修改后的Cmake文件如下。
 
-```
+```cmake
 cmake_minimum_required(VERSION 3.0.2)
 project(Qt_test)
 
@@ -149,7 +149,7 @@ install(FILES libs/libnrc_host.so
 
 ##### 回到工作空间根目录进行编译
 
-```
+```bash
 cd ~/inexbot
 catkin_make
 ```
@@ -161,7 +161,7 @@ catkin_make
 
 ### 7.运行文件
 
-```
+```bash
 # 首先确保 roscore 已运行
 roscore 
 # 然后运行该节点

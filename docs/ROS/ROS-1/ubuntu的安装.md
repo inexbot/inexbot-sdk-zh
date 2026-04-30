@@ -128,7 +128,7 @@
 
 （3）在主目录中点击右键，点击在终端打开，运行以下命令：
 
-```
+```bash
 tar -zxvf 文件夹全称
 ```
 运行后即可发现文件夹已解压，如下：
@@ -137,7 +137,7 @@ tar -zxvf 文件夹全称
 
 （4）运行以下两条命令：
 
-```
+```cmake
 cd vmware-tools-distrib
 sudo ./vmware-install.pl
 ```
