@@ -8,14 +8,14 @@ Lua文件存放在~/robot/job/lua目录内
 
 上位机发送:0x2511
 
-```
+```json
 {
   "fileName":"xxx.lua"
 }
 ```
 控制器返回:0x2512
 
-```
+```json
 {
   "fileName":"xxx.lua",
   "result":true, //false 运行是否成功
@@ -26,7 +26,7 @@ Lua文件存放在~/robot/job/lua目录内
 
 上位机发送:0x2513
 
-```
+```json
 {
   "fileName":"xxx.lua"
 }
@@ -35,12 +35,11 @@ Lua文件存放在~/robot/job/lua目录内
 
 上位机发送:0x2515
 
-```
+```json
 {}
 ```
 控制器回复:0x2516
-
-```
+```json
 {
   "fileNames":[
     {

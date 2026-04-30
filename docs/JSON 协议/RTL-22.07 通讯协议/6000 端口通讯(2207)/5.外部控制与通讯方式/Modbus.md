@@ -4,199 +4,153 @@
 
 *0x5701 EXTERN_PROGRAM_SET
 
+```json
 {
-
 "robot":1			//机器人1-4
-
 "programid":1			//程序id  1-300
-
 "jobname":xxxx			//作业文件名 没有后缀
-
 }
+```
 
 #### 查询Modbus程序 发送下列命令：
 
 *0x5702 EXTERN_PROGRAM_INQUIRE
 
+```json
 {
-
 "robot":1			//机器人1-4
-
 "startprogramid":1		//程序起始id
-
 "num":10			//需要获取的程序个数  1-10
-
 }
+```
 
 #### 查询Modbus程序时，控制器返回的值
 
 *0x5703 EXTERN_PROGRAM_RESPOND
 
+```json
 {
-
 "robot":1			//机器人1-4
-
 "startprogramid":1		//程序起始id
-
 "jobnamelist":["xxx","","yyyy"]	//十个数据 一个都没有就发10个""
-
 }
+```
 
 #### 设置控制器的modbus的类型
 
 - 命令字：0x5711
-
 - "baudrate": 115200
-
 - string 类型
 - Modbus RTU通信的波特率
-
 - "port": 2
-
 - int 类型
 - Modbus RTU通信的串口号
-
 - "slaveId": 1
-
 - int 类型
 - Modbus RTU通信的从设备ID
-
 - "IP": "192.168.1.11"
-
 - string 类型
 - Modbus TCP通信的服务器IP地址
-
 - "port": 502
-
 - int 类型
 - Modbus TCP通信的端口号
-
 - "master-slave": 1
-
 - string 类型
 - Modbus通信的主从模式，0表示主模式，1表示从模式
-
 - "scancycle": 100
-
 - int 类型
 - Modbus通信的扫描周期，单位毫秒
-
 - "stoprun": 0
-
 - Bool 类型
 - Modbus通信的运行停止标志，0表示未停止，1表示停止
-
 - "type": "TCP"
 
-```
+```json
 {
     "RTU": {
-        "baudrate": 115200,  
-        "port": 2,           
-        "slaveId": 1         
+        "baudrate": 115200,
+        "port": 2,
+        "slaveId": 1
     },
     "TCP": {
-        "IP": "192.168.1.11",  
-        "port": 502            
+        "IP": "192.168.1.11",
+        "port": 502
     },
-    "master-slave": 1,    
-    "scancycle": 100,     
-    "stoprun": 0,         
-    "type": "TCP"         
+    "master-slave": 1,
+    "scancycle": 100,
+    "stoprun": 0,
+    "type": "TCP"
 }
 ```
 #### 控制器的modbus类型查询
 
 - string 类型
 - Modbus通信的类型，可以是RTU或TCP
-
 - 命令字：0x5712
 
-```
+```json
 {
 }
 ```
 #### 控制器类型查询后像上位机发送
 
 - "date": 无
-
 - 命令字：0x5713
-
 - "baudrate": 115200
-
 - string 类型
 - Modbus RTU通信的波特率
-
 - "port": 2
-
 - int 类型
 - Modbus RTU通信的串口号
-
 - "slaveId": 1
-
 - int 类型
 - Modbus RTU通信的从设备ID
-
 - "IP": "192.168.1.11"
-
 - string 类型
 - Modbus TCP通信的服务器IP地址
-
 - "port": 502
-
 - int 类型
 - Modbus TCP通信的端口号
-
 - "enable": true
-
 - bool 类型
 - 是否启用Modbus通信
-
 - "master-slave": 1
-
 - string 类型
 - Modbus通信的主从模式，0表示主模式，1表示从模式
-
 - "scancycle": 100
-
 - int 类型
 - Modbus通信的扫描周期，单位毫秒
-
 - "stoprun": 0
-
 - Bool 类型
 - Modbus通信的运行停止标志，0表示未停止，1表示停止
-
 - "type": "TCP"
 
-```
+```json
 {
     "RTU": {
-        "baudrate": 115200,     
-        "port": 2,              
-        "slaveId": 1            
+        "baudrate": 115200,
+        "port": 2,
+        "slaveId": 1
     },
     "TCP": {
-        "IP": "192.168.1.11",   
-        "port": 502             
+        "IP": "192.168.1.11",
+        "port": 502
     },
-    "enable": true,            
-    "master-slave": 1,         
-    "scancycle": 100,          
-    "stoprun": 0,             
-    "type": "TCP"             
+    "enable": true,
+    "master-slave": 1,
+    "scancycle": 100,
+    "stoprun": 0,
+    "type": "TCP"
 }
 ```
 #### 控制器modbus使能
 
 - string 类型
 - Modbus通信的类型，可以是RTU或TCP
-
 - 命令字：0x5714
-
 - "enable":false
 
-```
+```json
 {
   "enable":false
 }
@@ -205,36 +159,37 @@
 
 *0x5715  MODBUS_CHECKHEART_SET
 
+```json
 {
-
 "checkheart":true   //modbus心跳检测
-
 }
+```
 
 #### Modbus查询心跳检测
 
 *0x5716    MODBUS_CHECKHEART_INQUIRE
 
+```json
 {
-
 }
+```
 
 #### 控制器回复Modbus心跳检测
 
 *0x5717    MODBUS_CHECKHEART_RESPOND
 
+```json
 {
-
 "checkheart":true    //modbus心跳检测
-
 }
+```
 
 #### 控制器作为从站是否连接查询
 
 - bool 类型
 - 是否启用Modbus通信
 
-```
+```json
 {
 }
 ```
@@ -244,18 +199,18 @@ date:  无
 
 - 命令字：0x5718
 
-```
+```json
 {
   "ModbusConnect":false
 }
-```
+```json
 "ModbusConnect":    false未连接/true连接
 
 #### 控制器作为主站的参数设置
 
 - 命令字：0x5719
 
-```
+```json
 {
     "masterStation": {
         "RTU": {
@@ -275,9 +230,7 @@ date:  无
     },
     "startAddress": false
 }
-
-
-```
+```json
 "masterStation": {                           // 主站配置信息
 
 "RTU": {                                // RTU通信配置
@@ -316,18 +269,18 @@ date:  无
 
 - 命令字：0x5744
 
-```
+```json
 {
   "processNumber":2
 }
-```
+```json
 "processNumber":  工艺号
 
 #### 查询之后控制器向上位机发送
 
 - 命令字：0x5745
 
-```
+```json
 {
     "RTU": {
         "baudrate": 115200,
@@ -346,9 +299,7 @@ date:  无
     "startAddress": true,
     "type": "RTU"
 }
-
-
-```
+```json
 "RTU": {                                    // RTU通信配置
 
 "baudrate": 115200,                     // 波特率为115200
