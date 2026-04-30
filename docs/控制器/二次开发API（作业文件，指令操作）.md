@@ -1,5 +1,155 @@
 # 二次开发API（作业文件，指令操作）
 
+本章节介绍作业文件管理、指令插入与运行队列控制的全部接口。
+
+## 函数分类索引
+
+### 作业文件管理
+
+| 函数 | 说明 |
+|------|------|
+| NRC_CreateJobfile / NRC_OpenJobfile / NRC_DeleteJobfile | 新建/打开/删除作业文件 |
+| NRC_JudgeJobIsExist | 判断作业文件是否存在 |
+| NRC_GetJobfileLineSum | 获取作业文件总行数 |
+| NRC_JobfileEraseCmd | 删除作业文件中指定行的指令 |
+
+### 作业文件运行控制
+
+| 函数 | 说明 |
+|------|------|
+| NRC_StartRunJobfile | 开始/继续运行作业文件 |
+| NRC_PauseRunJobfile | 暂停运行作业文件 |
+| NRC_StopRunJobfile | 停止运行作业文件（从头开始） |
+| NRC_StopRunJobfileNotPoweroff | 停止运行（不下使能） |
+| NRC_StepRunJobfile | 单步运行一行指令 |
+| NRC_GetCurrentOrderRuns | 获取执行方向（顺序/倒序） |
+| NRC_GetDistanceToOldTrack | 获取距原轨迹停止点距离 |
+| NRC_GetCycleIndex / NRC_GetCycleCount / NRC_GetCycleTimeSec | 循环次数/时间查询 |
+| NRC_SetCycleIndex | 设置循环次数 |
+
+### 局部后台程序
+
+| 函数 | 说明 |
+|------|------|
+| NRC_CreatePthreadJobfile / NRC_OpenPthreadJobfile | 新建/打开后台程序 |
+| NRC_DeletePthreadJobfile / NRC_JudgePthreadJobIsExist | 删除/判断后台程序 |
+
+### 无文件运行队列
+
+| 函数 | 说明 |
+|------|------|
+| NRC_CreateNoFlieRunqueue | 创建无文件运行队列 |
+| NRC_InsertNoFlieRunqueue | 插入一组指令到队列 |
+| NRC_StartRunNoFlieRunqueue | 开始运行无文件队列 |
+| NRC_PauseRunNoFlieRunqueue | 暂停运行队列 |
+| NRC_StopRunNoFlieRunqueue | 停止运行队列 |
+| NRC_StopRunNoFlieRunqueueNotPoweroff | 停止（不下使能） |
+
+### 追加运行模式
+
+| 函数 | 说明 |
+|------|------|
+| NRC_OpenInstrAppendRunMode | 开启追加运行模式（自动上使能） |
+| NRC_CloseInstrAppendRunMode | 关闭追加运行模式（自动下使能） |
+| NRC_AppendRunInstr | 追加运行指令 |
+| NRC_PauseInstrAppendRun / NRC_PauseInstrAppendRunAsynchronous | 暂停（同步/异步） |
+| NRC_RestartInstrAppendRun | 继续运行 |
+| NRC_PauseInstrAppendedRunInBreakpoint / NRC_RestartInstrAppendRunInBreakpoint | 断点模式暂停/继续 |
+| NRC_StopInstrAppendRun | 停止并清空队列 |
+| NRC_StopInstrAppendRunNotPoweroff | 停止（不下使能） |
+| NRC_GetIsInstrAppendRunMode | 获取当前是否在追加模式 |
+| NRC_GetRestAppendInstrNum | 获取剩余指令数 |
+| NRC_GetCurrentInstrRestPosNum | 获取当前指令剩余点数 |
+
+### 作业文件插入指令（按类型）
+
+**运动指令：**
+
+| 函数 | 说明 |
+|------|------|
+| NRC_JobfileInsertMOVJ / MOVL / MOVS / MOVC / IMOV | 关节/直线/圆弧/增量运动 |
+| NRC_JobfileInsertMOVJEXT / MOVLEXT / MOVCEXT | 带外部轴的运动指令 |
+| NRC_JobfileInsertPOSCALALL | 点位全改指令 |
+
+**IO 与时间指令：**
+
+| 函数 | 说明 |
+|------|------|
+| NRC_JobfileInsertDOUT | 数字输出 |
+| NRC_JobfileInsertTIMER | 延时 |
+| NRC_JobfileInsertWAIT | 等待条件 |
+
+**流程控制指令：**
+
+| 函数 | 说明 |
+|------|------|
+| NRC_JobfileInsertUNTIL / NRC_JobfileInsertENDUNTIL | 条件循环 |
+| NRC_JobfileInsertIF / NRC_JobfileInsertVarIF | 条件判断（端口/变量） |
+| NRC_JobfileInsertELSE | ELSE 分支 |
+| NRC_JobfileInsertENDIF | 条件结束 |
+| NRC_JobfileInsertWHILE / NRC_JobfileInsertVarWHILE | WHILE 循环 |
+| NRC_JobfileInsertENDWHILE | 循环结束 |
+
+**程序控制指令：**
+
+| 函数 | 说明 |
+|------|------|
+| NRC_JobfileInsertPAUSERUN | 暂停运行 |
+| NRC_JobfileInsertCONTINUERUN | 继续运行指定程序 |
+| NRC_JobfileInsertSTOPRUN | 停止运行 |
+| NRC_JobfileInsertRESTARTRUN | 重启运行 |
+| NRC_JobfileInsertPthreadStart / PthreadEnd | 启动/结束后台程序 |
+| NRC_JobfileInsertSETVAR | 设置变量 |
+| NRC_JobfileInsertOPCmd | 运算指令 |
+| NRC_JobfileInsertCMDNOTE | 备注 |
+
+**码垛指令：**
+
+| 函数 | 说明 |
+|------|------|
+| NRC_JobfileInsertPALON / PALOFF | 码垛开启/关闭 |
+| NRC_JobfileInsertPALGRIPPER / PALCLEAR | 抓手切换/清除 |
+| NRC_JobfileInsertPALENTER / PALSHIFT / PALREAL | 进入/偏移/放置 |
+
+**焊接指令：**
+
+| 函数 | 说明 |
+|------|------|
+| NRC_JobfileInsertARCON / ARCOFF | 焊接起弧/收弧 |
+| NRC_JobfileInsertTOFFSETON / TOFFSETOFF | 工具偏移开启/关闭 |
+
+**自定义：**
+
+| 函数 | 说明 |
+|------|------|
+| NRC_JobfileInsertCustomInstruction | 插入自定义指令 |
+
+### 运行队列插入指令
+
+对应作业文件插入指令，通过 `NRC_RunqueueInsert*` 系列函数将指令插入无文件运行队列，参数与作业文件版本基本一致（无需 `line` 参数）。
+
+### 状态查询
+
+| 函数 | 说明 |
+|------|------|
+| NRC_GetProgramRunStatus | 获取程序运行状态（0-停止 1-暂停 2-运行） |
+| NRC_GetRobotRunStatus | 获取机器人运动状态 |
+| NRC_GetTeachBoxConnectStatus | 获取示教盒连接状态 |
+| NRC_GetOpenJobFileName | 获取当前打开的作业文件名 |
+| NRC_GetRunqueueCurrentRunLine | 获取队列当前运行行号 |
+| NRC_GetJobfileCurrentRunLine | 获取作业文件当前运行行号 |
+| NRC_GetCurrentInstrRestPosNum | 获取当前指令剩余点数 |
+
+### 回调函数
+
+| 函数 | 说明 |
+|------|------|
+| NRC_SetCompleteOneInstrCallBack | 设置指令完成回调（无参/带参两种重载） |
+
+---
+
+## 详细接口文档
+
 | NRC_CreateJobfile | 新建作业文件。 |
 | NRC_OpenJobfile | 打开作业文件。 |
 | NRC_DeleteJobfile | 删除作业文件。 |

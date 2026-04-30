@@ -1,37 +1,17 @@
 # 二次开发API（码垛工艺）
 
-# 概述
+本章节介绍码垛工艺参数设置与控制接口。
 
-本章旨在帮助用户对于二次开发的库和函数接口的调用，参数的设置等。
+## 函数索引
 
-# 版本信息
-
-| 二次开发版本 | 公司 |
-| 1.0.0 | INEXBOT |
-
-# 版本迭代
-
-| 版本 | 修改日期 | 修改人 | 描述 |
-| 1.0.0 | 20260402 | Shanyufeng | 初始版本 |
-
-# 函数库 API说明
-
-此章节用于对函数库的API的功能说明及其使用方法介绍。
-
-## NexIghLib API 函数列表
-
-| 函数名称 | 函数功能 |
-| NRC_Pallet_SetUsePalletType | 设置使用简易码垛还是完整码垛。 |
-| NRC_Pallet_GetUsePalletType | 获取使用的是使用简易码垛还是完整码垛。 |
-| NRC_Pallet_SetGripperParm | 设置码垛抓手数据。 |
-| NRC_Pallet_GetGripperParm | 获取码垛抓手数据。 |
-| NRC_Pallet_SetSimplePosParm | 设置简易码垛位置数据。 |
-| NRC_Pallet_GetSimplePosParm | 获取简易码垛位置数据。 |
-| NRC_Pallet_SetSimpleNumParm | 设置简易码垛个数数据。 |
-| NRC_Pallet_GetSimpleNumParm | 获取简易码垛个数数据。 |
-| NRC_Pallet_ClearCurrentStatus | 清除码垛当前状态。 |
-| NRC_Pallet_SetPalletedWpNum | 设置码垛已码个数。 |
-| NRC_Pallet_GetPalletedWpNum | 获取码垛已码个数。 |
+| 函数 | 说明 |
+|------|------|
+| NRC_Pallet_SetUsePalletType / NRC_Pallet_GetUsePalletType | 简易/完整码垛切换 |
+| NRC_Pallet_SetGripperParm / NRC_Pallet_GetGripperParm | 抓手参数 |
+| NRC_Pallet_SetSimplePosParm / NRC_Pallet_GetSimplePosParm | 简易码垛位置参数 |
+| NRC_Pallet_SetSimpleNumParm / NRC_Pallet_GetSimpleNumParm | 简易码垛数量参数 |
+| NRC_Pallet_ClearCurrentStatus | 清除码垛状态 |
+| NRC_Pallet_SetPalletedWpNum / NRC_Pallet_GetPalletedWpNum | 已码工件数量 |
 
 ### NRC_Pallet_SetUsePalletType
 
