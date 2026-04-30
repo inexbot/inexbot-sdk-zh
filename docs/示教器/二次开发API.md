@@ -20,7 +20,7 @@ Library 文件夹中为静态库文件包括 linux 平台和 ARM 平台的库文
 
 1.nextp.h 头文件接口说明：
 
-```
+```cpp
 //创建 Nextp 类对象
 static QPointer<Nextp> getInstance();
 //获取系统字体
@@ -64,17 +64,17 @@ void hideTechnologyToolbuttons();
 
 组装 json 数据示例:
 
-```
+```cpp
 Json::Value root;
 Json::FastWriter wt;
 root["robot"] =1;
 root["booldata"] =true;
 root["data"] = 1.1;
-root["name"] =”nihao”;
+root["name"] ="nihao";
 ```
 解析 Json 数据示例
 
-```
+```cpp
 QByteArray jsonData //控制器发送的数据
 Json::Value root;
 Json::Reader reader;

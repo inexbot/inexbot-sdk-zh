@@ -6,7 +6,7 @@
 
 下列函数都包括在SDK中的头文件中:
 
-```
+```cpp
 /**
  * @brief 供自定义作业文件指令调用的MOVJ指令，不可直接调用
  * @param robotNum 机器人编号[1-4]
@@ -107,8 +107,7 @@ void NRC_Jobrun_MoveLinearSync(int robotNum, const NRC_Position & pos, const NRC
 ## 2，自定义指令函数使用示例
 
 ![](https://ones.inexbot.com/wiki/api/wiki/external-editor/RnqpQ1Yp/4m3bAa2G/resources/JH2Bex5efV2bWSL_Tg-IjqyL-QqVNE5EGy58czSEWqw.svg)
-
-```
+```cpp
 #include "nrcAPI.h"
 #include "nrcAPI_advance.h"
 #include "json/json.h"
@@ -169,6 +168,7 @@ int main() {
   }
 }
 ```
+
 ![](https://ones.inexbot.com/wiki/api/wiki/external-editor/RnqpQ1Yp/4m3bAa2G/resources/pTMHASGiJvsY-EWRrKEQwM7HLVxoAhEWhyB0l-59VyY.svg)
 
 ## 3，运行自定义指令

@@ -2,7 +2,7 @@
 
 servo_move(SOCKETFD socketFd,ServoMovePara servoMove) 可以接收一组点，然后将接收到的点位根据 timeStamp做平滑处理后下发到伺服运动。
 
-```
+```cpp
 struct ServoMovePara {
   ///< 传输参数
   bool clearBuffer;                         ///< 是否清除之前发送的，未开始插补计算的点位
@@ -28,7 +28,7 @@ struct ServoMovePara {
 
 ### 示例一：使用连续点位轨迹，每次传输部分点位来进行遥操作
 
-```
+```cpp
 #include <iostream>
 #include <vector>
 #include <chrono>
@@ -122,7 +122,7 @@ int main() {
 ```
 ### 示例二：使用独立点位轨迹，，一次性传输完全部轨迹点位（没有平滑）
 
-```
+```cpp
 #include <iostream>
 #include <vector>
 #include <chrono>

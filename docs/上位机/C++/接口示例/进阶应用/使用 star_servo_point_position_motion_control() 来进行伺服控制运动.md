@@ -2,7 +2,7 @@
 
 ## 伺服控制运动模式是每个通讯周期将点位直接下发给伺服进行运动
 
-```
+```cpp
 struct ServoPointMovePara
 {
 	bool end;                       ///< 是否清除之前发送的，未开始插补计算的点位
@@ -11,11 +11,12 @@ struct ServoPointMovePara
 	std::vector<std::vector<double>> pos;   ///< 二维数组，一维表示本次传输的点位数，二维长度为12，各个关节角度或笛卡尔坐标  坐标：机器人（前7个）+ 外部轴（后5个）
 };
 ```
+
 注意：发送的数据只有当总帧数sum = count的时候机器人才会运行，所以当sum≠1的时候，count就需要从1开始发送，一直累加到sum的值后，机器人才会开始按照对应下发的点位进行运动（具体可以看示例二，示例二就是sum = 10的情况，count = 1开始传到接口servo_point_position_motion_control中，count = 2传给servo_point_position_motion_control， count = 3 ..........一直到count = 10传给接口servo_point_position_motion_control后，下发的全部点位才会开始执行
 
 ### 示例1：封装servo_point_position_motion_control()接口，将目标点位发送给伺服进行运动，每次只发送一个点给伺服
 
-```
+```cpp
 void test_servo_point_position_motion_control()
 {
   
@@ -36,13 +37,11 @@ void test_servo_point_position_motion_control()
     , pos[7], pos[8], pos[9], pos[10], pos[11]);
   }
 }
-}
-
-
 ```
-### 示例1：封装servo_point_position_motion_control()接口，将目标点位发送给伺服进行运动，每次最大可发送600个点位
 
-```
+### 示例2：封装servo_point_position_motion_control()接口，将目标点位发送给伺服进行运动，每次最大可发送600个点位
+
+```cpp
 void test_servo_point_position_motion_control()
 {
   
@@ -86,9 +85,10 @@ void test_servo_point_position_motion_control()
   }
 }
 ```
-### 封装servo_point_position_motion_control()接口，当出现发送点位不运动，或者缓存区已经满的情况下，发送
 
-```
+### 示例3：封装servo_point_position_motion_control()接口，当出现发送点位不运动，或者缓存区已经满的情况下，发送
+
+```cpp
 void test_clean_motion()
 {
   ServoPointMovePara servoMove;
@@ -101,9 +101,10 @@ void test_clean_motion()
     std::cout << "servo_point_position_motion_control return  " << servo_point_position_motion_control(fd_7000, servoMove) << std::endl;
 }
 ```
+
 ### 示例：当出现发送点位不运动，或者缓存区已经满的情况下，发送下面的代码
 
-```
+```cpp
 #include <iostream>
 #include <vector>
 #include <chrono>

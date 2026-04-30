@@ -2,7 +2,7 @@
 
 ## 接口说明
 
-```
+```cpp
 /**
  * @brief 打开关节跟踪模式
  * @param vmax 速度约束 单位 度/秒
@@ -24,9 +24,10 @@ Result set_servoJ_pos(SOCKETFD socketFd, std::vector<double> q);
  */
 Result stop_servoJ(SOCKETFD socketFd);
 ```
+
 ## 使用示例
 
-```
+```cpp
 int main()
 {
     // 连接6000端口, 用来控制上电，查询机械臂当前位置
@@ -69,4 +70,3 @@ int main()
     return 0;
 }
 ```
-servoJ示例：python版本

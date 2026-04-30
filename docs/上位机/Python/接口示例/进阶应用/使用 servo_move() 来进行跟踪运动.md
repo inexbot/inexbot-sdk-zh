@@ -3,8 +3,7 @@
 servo_move(SOCKETFD socketFd,ServoMovePara servoMove) 可以接收一组点，然后将接收到的点位根据 timeStamp做平滑处理后下发到伺服运动。
 
 ServoMovePara结构体说明：
-
-```
+```cpp
 struct ServoMovePara {
   ///< 传输参数
   int robotNum;                             ///< 控制第几个机器人
@@ -27,7 +26,7 @@ struct ServoMovePara {
 
 PS：在使用servo_move接口时，需要在运行模式下运行包含有外部点指令的作业文件（外部点指令是接收servo_move传输数据的）
 
-```
+```py
 def test_7000(socketFd):
     print('开启测试7000.....')
     socket_7000 =  aa.connect_robot("192.168.1.13", "7000")
